@@ -1,0 +1,548 @@
+The target system is: Generic - 3.1.0 - posix
+The host system is: Linux - 5.10.16.3-microsoft-standard-WSL2 - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/bin/gcc 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/workspaces/Zephyr/build/CMakeFiles/3.20.5/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /usr/bin/g++ 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is GNU, found in "/workspaces/Zephyr/build/CMakeFiles/3.20.5/CompilerIdCXX/a.out"
+
+Checking whether the ASM compiler is GNU using "--version" matched "(GNU assembler)|(GCC)|(Free Software Foundation)":
+gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Performing C SOURCE FILE Test check_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_4d899 && [1/2] Building C object CMakeFiles/cmTC_4d899.dir/src.c.obj
+[2/2] Linking C executable cmTC_4d899
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C__ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_4245f && [1/2] Building C object CMakeFiles/cmTC_4245f.dir/src.c.obj
+[2/2] Linking C executable cmTC_4245f
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_Wpointer_sign_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_173cc && [1/2] Building C object CMakeFiles/cmTC_173cc.dir/src.c.obj
+[2/2] Linking C executable cmTC_173cc
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_Wpointer_arith_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_b6f7d && [1/2] Building C object CMakeFiles/cmTC_b6f7d.dir/src.c.obj
+[2/2] Linking C executable cmTC_b6f7d
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_Wexpansion_to_defined_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_e4f2c && [1/2] Building C object CMakeFiles/cmTC_e4f2c.dir/src.c.obj
+[2/2] Linking C executable cmTC_e4f2c
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_Wlogical_op_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_af362 && [1/2] Building C object CMakeFiles/cmTC_af362.dir/src.c.obj
+[2/2] Linking C executable cmTC_af362
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_Wmissing_field_initializers_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_342dc && [1/2] Building C object CMakeFiles/cmTC_342dc.dir/src.c.obj
+[2/2] Linking C executable cmTC_342dc
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_Wpacked_bitfield_compat_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_9a9d4 && [1/2] Building C object CMakeFiles/cmTC_9a9d4.dir/src.c.obj
+[2/2] Linking C executable cmTC_9a9d4
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_Wvla_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_12ce1 && [1/2] Building C object CMakeFiles/cmTC_12ce1.dir/src.c.obj
+[2/2] Linking C executable cmTC_12ce1
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_Wunused_but_set_variable_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_606f4 && [1/2] Building C object CMakeFiles/cmTC_606f4.dir/src.c.obj
+[2/2] Linking C executable cmTC_606f4
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_Werror_implicit_int_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_e8ada && [1/2] Building C object CMakeFiles/cmTC_e8ada.dir/src.c.obj
+[2/2] Linking C executable cmTC_e8ada
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_mstack_protector_guard_global_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_b8a48 && [1/2] Building C object CMakeFiles/cmTC_b8a48.dir/src.c.obj
+[2/2] Linking C executable cmTC_b8a48
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_fno_freestanding_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_bdb85 && [1/2] Building C object CMakeFiles/cmTC_bdb85.dir/src.c.obj
+[2/2] Linking C executable cmTC_bdb85
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_gdwarf_4_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_774ea && [1/2] Building C object CMakeFiles/cmTC_774ea.dir/src.c.obj
+[2/2] Linking C executable cmTC_774ea
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C___Wl___print_memory_usage succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_cbb4d && [1/2] Building C object CMakeFiles/cmTC_cbb4d.dir/src.c.obj
+[2/2] Linking C executable cmTC_cbb4d
+Memory region         Used Size  Region Size  %age Used
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C___lasan succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_6ead2 && [1/2] Building C object CMakeFiles/cmTC_6ead2.dir/src.c.obj
+[2/2] Linking C executable cmTC_6ead2
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C___fsanitize_address succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_cfe3b && [1/2] Building C object CMakeFiles/cmTC_cfe3b.dir/src.c.obj
+[2/2] Linking C executable cmTC_cfe3b
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C___fsanitize_undefined succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_1ce69 && [1/2] Building C object CMakeFiles/cmTC_1ce69.dir/src.c.obj
+[2/2] Linking C executable cmTC_1ce69
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C___pg succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_2265a && [1/2] Building C object CMakeFiles/cmTC_2265a.dir/src.c.obj
+[2/2] Linking C executable cmTC_2265a
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C__no_pie succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_3ad4c && [1/2] Building C object CMakeFiles/cmTC_3ad4c.dir/src.c.obj
+[2/2] Linking C executable cmTC_3ad4c
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C__Wl___gc_sections succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_e700a && [1/2] Building C object CMakeFiles/cmTC_e700a.dir/src.c.obj
+[2/2] Linking C executable cmTC_e700a
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C__Wl___build_id_none succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_ffc74 && [1/2] Building C object CMakeFiles/cmTC_ffc74.dir/src.c.obj
+[2/2] Linking C executable cmTC_ffc74
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C__Wl___sort_common_descending succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_6304e && [1/2] Building C object CMakeFiles/cmTC_6304e.dir/src.c.obj
+[2/2] Linking C executable cmTC_6304e
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C__Wl___sort_section_alignment succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_d1637 && [1/2] Building C object CMakeFiles/cmTC_d1637.dir/src.c.obj
+[2/2] Linking C executable cmTC_d1637
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_fno_asynchronous_unwind_tables_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_0c3f0 && [1/2] Building C object CMakeFiles/cmTC_0c3f0.dir/src.c.obj
+[2/2] Linking C executable cmTC_0c3f0
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_fno_pie_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_f4585 && [1/2] Building C object CMakeFiles/cmTC_f4585.dir/src.c.obj
+[2/2] Linking C executable cmTC_f4585
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_fno_pic_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_e6225 && [1/2] Building C object CMakeFiles/cmTC_e6225.dir/src.c.obj
+[2/2] Linking C executable cmTC_e6225
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_fno_reorder_functions_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_de453 && [1/2] Building C object CMakeFiles/cmTC_de453.dir/src.c.obj
+[2/2] Linking C executable cmTC_de453
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_fno_defer_pop_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_a4415 && [1/2] Building C object CMakeFiles/cmTC_a4415.dir/src.c.obj
+[2/2] Linking C executable cmTC_a4415
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_fmacro_prefix_map__workspaces_Zephyr_CMAKE_SOURCE_DIR_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_7ab3a && [1/2] Building C object CMakeFiles/cmTC_7ab3a.dir/src.c.obj
+[2/2] Linking C executable cmTC_7ab3a
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_fmacro_prefix_map__home_user_zephyrproject_zephyr_ZEPHYR_BASE_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_573f1 && [1/2] Building C object CMakeFiles/cmTC_573f1.dir/src.c.obj
+[2/2] Linking C executable cmTC_573f1
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_fmacro_prefix_map__home_user_zephyrproject_WEST_TOPDIR_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_7277e && [1/2] Building C object CMakeFiles/cmTC_7277e.dir/src.c.obj
+[2/2] Linking C executable cmTC_7277e
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_ffunction_sections_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_3df88 && [1/2] Building C object CMakeFiles/cmTC_3df88.dir/src.c.obj
+[2/2] Linking C executable cmTC_3df88
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_fdata_sections_C_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_9456d && [1/2] Building C object CMakeFiles/cmTC_9456d.dir/src.c.obj
+[2/2] Linking C executable cmTC_9456d
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C__ldl succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_357b4 && [1/2] Building C object CMakeFiles/cmTC_357b4.dir/src.c.obj
+[2/2] Linking C executable cmTC_357b4
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C__pthread succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_90bf5 && [1/2] Building C object CMakeFiles/cmTC_90bf5.dir/src.c.obj
+[2/2] Linking C executable cmTC_90bf5
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test check_C__lm succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_8efb3 && [1/2] Building C object CMakeFiles/cmTC_8efb3.dir/src.c.obj
+[2/2] Linking C executable cmTC_8efb3
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test check_Wpointer_arith_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_2a63c && [1/2  50% :: 0.122] Building CXX object CMakeFiles/cmTC_2a63c.dir/src.cxx.obj
+[2/2 100% :: 0.183] Linking CXX executable cmTC_2a63c
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_Wexpansion_to_defined_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_1f262 && [1/2  50% :: 0.026] Building CXX object CMakeFiles/cmTC_1f262.dir/src.cxx.obj
+[2/2 100% :: 0.084] Linking CXX executable cmTC_1f262
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_Wlogical_op_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_047b1 && [1/2  50% :: 0.028] Building CXX object CMakeFiles/cmTC_047b1.dir/src.cxx.obj
+[2/2 100% :: 0.090] Linking CXX executable cmTC_047b1
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_Wmissing_field_initializers_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_66f56 && [1/2  50% :: 0.028] Building CXX object CMakeFiles/cmTC_66f56.dir/src.cxx.obj
+[2/2 100% :: 0.086] Linking CXX executable cmTC_66f56
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_Wpacked_bitfield_compat_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_e3e13 && [1/2  50% :: 0.027] Building CXX object CMakeFiles/cmTC_e3e13.dir/src.cxx.obj
+[2/2 100% :: 0.086] Linking CXX executable cmTC_e3e13
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_Wvla_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_43274 && [1/2  50% :: 0.028] Building CXX object CMakeFiles/cmTC_43274.dir/src.cxx.obj
+[2/2 100% :: 0.084] Linking CXX executable cmTC_43274
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_Wunused_but_set_variable_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_e6101 && [1/2  50% :: 0.028] Building CXX object CMakeFiles/cmTC_e6101.dir/src.cxx.obj
+[2/2 100% :: 0.083] Linking CXX executable cmTC_e6101
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_mstack_protector_guard_global_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_e4eef && [1/2  50% :: 0.029] Building CXX object CMakeFiles/cmTC_e4eef.dir/src.cxx.obj
+[2/2 100% :: 0.087] Linking CXX executable cmTC_e4eef
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_fno_freestanding_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_75b75 && [1/2  50% :: 0.027] Building CXX object CMakeFiles/cmTC_75b75.dir/src.cxx.obj
+[2/2 100% :: 0.079] Linking CXX executable cmTC_75b75
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_gdwarf_4_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_dcf41 && [1/2  50% :: 0.038] Building CXX object CMakeFiles/cmTC_dcf41.dir/src.cxx.obj
+[2/2 100% :: 0.112] Linking CXX executable cmTC_dcf41
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_fno_asynchronous_unwind_tables_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_3b635 && [1/2  50% :: 0.032] Building CXX object CMakeFiles/cmTC_3b635.dir/src.cxx.obj
+[2/2 100% :: 0.104] Linking CXX executable cmTC_3b635
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_fno_pie_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_f6b30 && [1/2  50% :: 0.033] Building CXX object CMakeFiles/cmTC_f6b30.dir/src.cxx.obj
+[2/2 100% :: 0.102] Linking CXX executable cmTC_f6b30
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_fno_pic_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_4158e && [1/2  50% :: 0.029] Building CXX object CMakeFiles/cmTC_4158e.dir/src.cxx.obj
+[2/2 100% :: 0.087] Linking CXX executable cmTC_4158e
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_fno_reorder_functions_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_f707c && [1/2  50% :: 0.052] Building CXX object CMakeFiles/cmTC_f707c.dir/src.cxx.obj
+[2/2 100% :: 0.133] Linking CXX executable cmTC_f707c
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_fno_defer_pop_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_4ea19 && [1/2  50% :: 0.042] Building CXX object CMakeFiles/cmTC_4ea19.dir/src.cxx.obj
+[2/2 100% :: 0.124] Linking CXX executable cmTC_4ea19
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_fmacro_prefix_map__workspaces_Zephyr_CMAKE_SOURCE_DIR_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_5d37c && [1/2  50% :: 0.044] Building CXX object CMakeFiles/cmTC_5d37c.dir/src.cxx.obj
+[2/2 100% :: 0.116] Linking CXX executable cmTC_5d37c
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_fmacro_prefix_map__home_user_zephyrproject_zephyr_ZEPHYR_BASE_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_63f89 && [1/2  50% :: 0.031] Building CXX object CMakeFiles/cmTC_63f89.dir/src.cxx.obj
+[2/2 100% :: 0.101] Linking CXX executable cmTC_63f89
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_fmacro_prefix_map__home_user_zephyrproject_WEST_TOPDIR_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_d6251 && [1/2  50% :: 0.029] Building CXX object CMakeFiles/cmTC_d6251.dir/src.cxx.obj
+[2/2 100% :: 0.088] Linking CXX executable cmTC_d6251
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_ffunction_sections_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_a363c && [1/2  50% :: 0.029] Building CXX object CMakeFiles/cmTC_a363c.dir/src.cxx.obj
+[2/2 100% :: 0.088] Linking CXX executable cmTC_a363c
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test check_fdata_sections_CXX_ succeeded with the following output:
+Change Dir: /workspaces/Zephyr/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_5b37f && [1/2  50% :: 0.031] Building CXX object CMakeFiles/cmTC_5b37f.dir/src.cxx.obj
+[2/2 100% :: 0.090] Linking CXX executable cmTC_5b37f
+
+
+Source file was:
+int main() { return 0; }

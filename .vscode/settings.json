@@ -1,0 +1,13 @@
+{
+    "clangd.arguments": [
+        "--clang-tidy"
+    ],
+    "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/compile_commands.json",
+    "clangd.fallbackFlags": [
+        " --compile-commands-dir=build"
+    ],
+    "editor.formatOnType": true,
+    "clang-format.language.cpp.fallbackStyle": "",
+    "clang-format.language.c.fallbackStyle": "",
+    "clang-format.fallbackStyle": "Microsoft"
+}
