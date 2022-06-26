@@ -3,6 +3,7 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
+    "postCreateCommand": "git config --global --add safe.directory /workspaces/Zephyr",
 	"remoteUser": "user",
 	"customizations": {
 		"vscode": {

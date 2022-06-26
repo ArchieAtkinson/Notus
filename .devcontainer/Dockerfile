@@ -34,10 +34,10 @@ RUN apt-get -y update && \
         clang-tidy \
 		cpio \
 		device-tree-compiler \
+        default-jre \
 		dfu-util \
 		diffstat \
 		dos2unix \
-		doxygen \
 		file \
 		flex \
 		g++ \
@@ -54,15 +54,6 @@ RUN apt-get -y update && \
 		help2man \
 		iproute2 \
 		lcov \
-		libglib2.0-dev \
-		libgtk2.0-0 \
-		liblocale-gettext-perl \
-		libncurses5-dev \
-		libpcap-dev \
-		libpopt0 \
-		libsdl1.2-dev \
-		libsdl2-dev \
-		libssl-dev \
 		libtool \
 		libtool-bin \
 		locales \
@@ -88,7 +79,6 @@ RUN apt-get -y update && \
 		wget \
 		ovmf \
 		xz-utils
-
 
 # Initialise system locale
 RUN locale-gen en_US.UTF-8
@@ -133,20 +123,6 @@ RUN pip3 install wheel pip -U &&\
 		     protobuf \
 		     GitPython
 
-# Install LLVM and Clang
-RUN wget ${WGET_ARGS} -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
-	apt-get update && \
-	apt-get install -y clang-$LLVM_VERSION clang-tidy-$LLVM_VERSION lldb-$LLVM_VERSION lld-$LLVM_VERSION clangd-$LLVM_VERSION llvm-$LLVM_VERSION-dev
-
-# Install Zephyr SDK
-RUN mkdir -p /opt/toolchains && \
-	cd /opt/toolchains && \
-	wget ${WGET_ARGS} https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZSDK_VERSION}/zephyr-sdk-${ZSDK_VERSION}_linux-${HOSTTYPE}.tar.gz && \
-	tar xf zephyr-sdk-${ZSDK_VERSION}_linux-${HOSTTYPE}.tar.gz && \
-	zephyr-sdk-${ZSDK_VERSION}/setup.sh -t all -h -c && \
-	rm zephyr-sdk-${ZSDK_VERSION}_linux-${HOSTTYPE}.tar.gz
-
-
 # Oh My Bash
 RUN bash -c "$(wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh -O -)"
 
@@ -155,15 +131,7 @@ RUN apt-get clean -y && \
 	apt-get autoremove --purge -y && \
 	rm -rf /var/lib/apt/lists/*
 
-# Run the Zephyr SDK setup script as 'user' in order to ensure that the
-# `Zephyr-sdk` CMake package is located in the package registry under the
-# user's home directory.
 USER user
-RUN sudo -E -- bash -c ' \
-	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/setup.sh -c && \
-	chown -R user:user /home/user/.cmake \
-	'
-    
 # Install Zephyr
 RUN sudo west init --mr v${ZEPHYR_VERSION} ~/zephyrproject && \
     cd ~/zephyrproject && \
