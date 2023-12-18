@@ -1,0 +1,7 @@
+# Test of the posix_arch k_busy_wait & cpu_hold() functionality
+tests:
+  boards.native_posix.cpu_wait:
+    platform_allow:
+      - native_sim
+    integration_platforms:
+      - native_posix

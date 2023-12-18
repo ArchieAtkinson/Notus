@@ -1,6 +1,5 @@
-#include "kernel.h"
+#include <zephyr/kernel.h>
 #include "posix_board_if.h"
-#include <zephyr/zephyr.h>
 
 void thread1(void *a, void *b, void *c) {
   
@@ -24,11 +23,14 @@ void thread2(void *a, void *b, void *c)
 }
 K_THREAD_DEFINE(thread2_id, 500, thread2, NULL, NULL, NULL, 6, 0, 0);
 
-void main(void)
+int main(void)
 {
     printk("Hello! %s\n", CONFIG_BOARD);
+    
+    k_msleep(5000);
 
-    k_sleep(K_FOREVER);
+    printk("Done\n");
 
     posix_exit(0);
+    return 0;
 }

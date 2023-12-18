@@ -3,17 +3,25 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-    "postCreateCommand": "git config --global --add safe.directory /workspaces/Zephyr",
+    "postCreateCommand": "git config --global --add safe.directory /home/user/zephyrproject/zephyr",
 	"remoteUser": "user",
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"twxs.cmake",
 				"ms-vscode.cmake-tools",
-				"SonarSource.sonarlint-vscode",
 				"llvm-vs-code-extensions.vscode-clangd",
-				"xaver.clang-format"
-			]
+				"xaver.clang-format",
+				"ms-vscode.cpptools"
+			],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "terminal.integrated.profiles.linux": { "bash": { "path": "/bin/bash" } }
+            }
 		}
-	}
-}
+	},
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/user/zephyrproject/zephyr/application,type=bind", 
+    "workspaceFolder": "/home/user/zephyrproject/zephyr/application",
+
+    "runArgs": ["--privileged"]
+}   
