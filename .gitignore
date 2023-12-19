@@ -1,3 +1,4 @@
-/.cache
-/build
-/twister-out*
+.cache
+build
+twister-out*
+scripts/__pycache__
