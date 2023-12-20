@@ -14,7 +14,7 @@
     "clang-format.language.c.fallbackStyle": "",
     "clang-format.fallbackStyle": "Microsoft",
 
-    "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/compile_commands.json",
+    "sonarlint.pathToCompileCommands": "${workspaceFolder}/compile_commands.json",
 
     "cmake.configureOnOpen": false,
 
@@ -24,4 +24,5 @@
     "cmake.autoSelectActiveFolder": false,
     "cmake.buildBeforeRun": false,
     "cmake.configureOnEdit": false,
+    "editor.defaultFormatter": "xaver.clang-format",
 }
