@@ -12,7 +12,9 @@
 				"ms-vscode.cmake-tools",
 				"llvm-vs-code-extensions.vscode-clangd",
 				"xaver.clang-format",
-				"ms-vscode.cpptools"
+				"ms-vscode.cpptools",
+				"yzhang.markdown-all-in-one",
+				"bierner.markdown-mermaid"
 			],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",
