@@ -47,7 +47,7 @@ flowchart TD
 ```mermaid
 classDiagram
     Stopwatch: +start()
-    Stopwatch: +stop()
+    Stopwatch: +pause()
     Stopwatch: +reset()
     Stopwatch: +get_time() milliseconds
 ```
