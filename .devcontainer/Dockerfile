@@ -13,6 +13,7 @@ USER user
 ENV DISPLAY=:0
 ENV ZEPHYR_BASE=/home/user/zephyrproject/zephyr
 ENV ZEPHYR_TOOLCHAIN_VARIANT=zephyr
+ENV APPLICATION_ROOT=$ZEPHYR_BASE/application
 
 # Oh My Bash
 RUN bash -c "$(wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh -O -)"
