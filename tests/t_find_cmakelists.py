@@ -4,10 +4,12 @@ import sys
 import unittest
 
 # Add the parent directory to the sys.path list
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+scripts_dir_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "scripts"))
+sys.path.append(scripts_dir_path)
 
-# Now, you can import the module from the parent directory
 from find_cmakelist import find_cmake_lists_file
+
+
 class TestFindCMakeListsFile(unittest.TestCase):
     def setUp(self):
         # Create a temporary directory structure for testing
