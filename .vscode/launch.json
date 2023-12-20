@@ -19,6 +19,25 @@
                 },
             ],
             "preLaunchTask": "Build Native Sim"
+        },
+        {
+            "name": "Local Native Sim",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/../build/zephyr/zephyr.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+            ],
+            "preLaunchTask": "Local Build Native Sim"
         }
     ]
 }
