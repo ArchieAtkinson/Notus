@@ -4,10 +4,11 @@
     "terminal.integrated.automationShell.linux":"bash",
 
     "clangd.arguments": [
-        "--clang-tidy"
+        "--clang-tidy",
+        "--compile-commands-dir=/home/user/zephyrproject/zephyr/application"
     ],
     "clangd.fallbackFlags": [
-        " --compile-commands-dir=build"
+        "--compile-commands-dir=build"
     ],
 
     "clang-format.language.cpp.fallbackStyle": "",

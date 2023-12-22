@@ -1,8 +1,6 @@
 # Design
 
----
-title: Ideas
----
+
 ```mermaid
 mindmap
   root((Coffee Scale))
@@ -51,3 +49,17 @@ classDiagram
     Stopwatch: +reset()
     Stopwatch: +get_time() milliseconds
 ```
+
+
+## Buttons
+
+Goals:
+- Debounce
+- Input Types
+  - Single/Shot Press
+  - Double Press
+  - Triple Press
+  - Long Press
+  - Longer Press? 
+  - On Press
+  - On Release?
