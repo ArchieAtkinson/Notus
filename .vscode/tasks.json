@@ -51,7 +51,7 @@
 			"label": "Local Run Native Sim",
 			"type": "shell",
 			"group": {
-				"kind": "none",
+				"kind": "test",
 				"isDefault": true
 			},
 			"command": "(cd \"$(${workspaceFolder}/scripts/find_cmakelist.py)\"; build/zephyr/zephyr.exe)",

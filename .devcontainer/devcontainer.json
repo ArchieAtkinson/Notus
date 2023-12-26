@@ -14,7 +14,8 @@
 				"xaver.clang-format",
 				"ms-vscode.cpptools",
 				"yzhang.markdown-all-in-one",
-				"bierner.markdown-mermaid"
+				"bierner.markdown-mermaid",
+				"streetsidesoftware.code-spell-checker"
 			],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",
