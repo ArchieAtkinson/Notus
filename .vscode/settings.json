@@ -5,7 +5,7 @@
 
     "clangd.arguments": [
         "--clang-tidy",
-        "--compile-commands-dir=/home/user/zephyrproject/zephyr/application"
+        "--compile-commands-dir=$APPLICATION_ROOT"
     ],
     "clangd.fallbackFlags": [
         "--compile-commands-dir=build"
@@ -26,4 +26,9 @@
     "cmake.buildBeforeRun": false,
     "cmake.configureOnEdit": false,
     "editor.defaultFormatter": "xaver.clang-format",
+    "clangd.path": "clangd-17",
+    "cSpell.words": [
+        "zassert",
+        "ZTEST"
+    ],
 }

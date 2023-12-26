@@ -4,9 +4,14 @@ ARG ZEPHYR_VERSION=3.5.0
 
 # Adjust 'user' home directory permissions
 USER root
+
 RUN chown -R user:user /home/user
 
-# Switch to 'user' contextz
+RUN wget https://apt.llvm.org/llvm.sh
+RUN chmod +x llvm.sh
+RUN sudo ./llvm.sh 17 all
+
+# Switch to 'user' context
 USER user
 
 # Configure environment variables
