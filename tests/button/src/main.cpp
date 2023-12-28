@@ -4,6 +4,7 @@
 #include <zephyr/kernel.h>
 
 #include "button.hpp"
+#include "zephyr/sys_clock.h"
 
 
 ZTEST(button, test_constructor_throw) // NOLINT
@@ -28,7 +29,7 @@ ZTEST(button, test_constructor_throw) // NOLINT
 }
 
 
-ZTEST(button, test_debounce) // NOLINT PP
+ZTEST(button, test_single_press_and_debounce) // NOLINT PP
 {
     static struct gpio_dt_spec irq_pin = GPIO_DT_SPEC_GET(DT_INST(0, test_button), button_gpios);
 
@@ -37,12 +38,14 @@ ZTEST(button, test_debounce) // NOLINT PP
     {
         atomic_inc(&cb_call_count);
     };
-
-    Button button(&irq_pin, K_MSEC(5));
-    button.add_callback(cb_test2);
+    const k_timeout_t debounce_time_ms = K_MSEC(5);
+    Button            button(&irq_pin, debounce_time_ms);
+    
+    button.add_single_press_callback(cb_test2);
     
     gpio_emul_input_set(irq_pin.port, irq_pin.pin, 1);
     k_sleep(K_USEC(10));
+    
     gpio_emul_input_set(irq_pin.port, irq_pin.pin, 0);
     k_sleep(K_USEC(10)); 
     gpio_emul_input_set(irq_pin.port, irq_pin.pin, 1);
@@ -54,9 +57,9 @@ ZTEST(button, test_debounce) // NOLINT PP
     gpio_emul_input_set(irq_pin.port, irq_pin.pin, 0);
     k_sleep(K_USEC(10));
     gpio_emul_input_set(irq_pin.port, irq_pin.pin, 1);
-    constexpr int debounce_time_ms = 5;
-    k_sleep(K_MSEC(debounce_time_ms + 1));
-
-    zassert_true(atomic_get(&cb_call_count) == 1); // NOLINT    
+    k_sleep(debounce_time_ms);
+    gpio_emul_input_set(irq_pin.port, irq_pin.pin, 0);
+    
+    zassert_equal(atomic_get(&cb_call_count), 1); // NOLINT    
 }
 ZTEST_SUITE(button, NULL, NULL, NULL, NULL, NULL); // NOLINT
