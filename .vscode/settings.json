@@ -29,6 +29,8 @@
     "clangd.path": "clangd-17",
     "cSpell.words": [
         "clangd",
+        "GPIO",
+        "hicpp",
         "printk",
         "zassert",
         "ZTEST"
