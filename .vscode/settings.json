@@ -25,9 +25,11 @@
     "cmake.autoSelectActiveFolder": false,
     "cmake.buildBeforeRun": false,
     "cmake.configureOnEdit": false,
-    "editor.defaultFormatter": "xaver.clang-format",
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
     "clangd.path": "clangd-17",
     "cSpell.words": [
+        "clangd",
+        "printk",
         "zassert",
         "ZTEST"
     ],
