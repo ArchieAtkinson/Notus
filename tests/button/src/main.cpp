@@ -8,6 +8,32 @@
 #include "zephyr/sys_clock.h"
 
 
+ZTEST(button, test_double_press) // NOLINT
+{
+    static struct gpio_dt_spec irq_pin = GPIO_DT_SPEC_GET(DT_INST(0, test_button), button_gpios);
+    
+    atomic_t cb_call_count = ATOMIC_INIT(0);
+    auto cb_test2  = [&]()
+    {
+        atomic_inc(&cb_call_count);
+    };
+    const k_timeout_t debounce_time = K_MSEC(5);
+    Button            button(&irq_pin, debounce_time);
+
+    const int on_double_press_time = 100;
+    button.add_double_press_callback(cb_test2, std::chrono::milliseconds(on_double_press_time));
+    gpio_emul_input_set(irq_pin.port, irq_pin.pin, 1);
+    k_sleep(debounce_time);
+    gpio_emul_input_set(irq_pin.port, irq_pin.pin, 0);
+    k_sleep(K_MSEC(on_double_press_time));
+    gpio_emul_input_set(irq_pin.port, irq_pin.pin, 1);
+    k_sleep(debounce_time);
+    gpio_emul_input_set(irq_pin.port, irq_pin.pin, 0);
+
+    zassert_equal(atomic_get(&cb_call_count), 1); // NOLINT
+}
+
+
 ZTEST(button, test_on_release) // NOLINT
 {
     static struct gpio_dt_spec irq_pin = GPIO_DT_SPEC_GET(DT_INST(0, test_button), button_gpios);
@@ -77,8 +103,8 @@ ZTEST(button, test_on_press_and_debounce) // NOLINT
             gpio_emul_input_set(irq_pin.port, irq_pin.pin, 0);
         }
     };
-    
     debounce_sim(5);
+
     zassert_equal(atomic_get(&cb_call_count), 1); // NOLINT
 }
 
