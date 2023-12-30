@@ -54,7 +54,7 @@ ZTEST(button, test_constructor_throw) // NOLINT
 }
 
 
-ZTEST(button, test_on_press_and_debounce) // NOLINT PP
+ZTEST(button, test_on_press_and_debounce) // NOLINT 
 {
     static struct gpio_dt_spec irq_pin = GPIO_DT_SPEC_GET(DT_INST(0, test_button), button_gpios);
 
@@ -86,7 +86,7 @@ static void my_suite_before(void *fixture)
 {
     ARG_UNUSED(fixture);
     static struct gpio_dt_spec irq_pin = GPIO_DT_SPEC_GET(DT_INST(0, test_button), button_gpios);
-    gpio_pin_configure_dt(&irq_pin, GPIO_INPUT); // NOLINT(hicpp-signed-bitwise))
+    gpio_pin_configure_dt(&irq_pin, GPIO_INPUT); 
     gpio_emul_input_set(irq_pin.port, irq_pin.pin, 0);
     
 }

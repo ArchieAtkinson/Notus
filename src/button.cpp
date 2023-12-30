@@ -24,7 +24,7 @@ void timer_expiry_func(struct k_timer *timer)
 
     if (self->_on_release_callback)
     {
-        gpio_pin_interrupt_configure_dt(self->_spec, GPIO_INT_EDGE_FALLING); // NOLINT(hicpp-signed-bitwise)
+        gpio_pin_interrupt_configure_dt(self->_spec, GPIO_INT_EDGE_FALLING); 
         gpio_add_callback_dt(self->_spec, &self->_falling_cb_data.cb_data);
     }
 
@@ -41,8 +41,8 @@ void zephyr_callback_rising(const struct device *port, struct gpio_callback *cal
     Button *self = data->self;
 
     gpio_remove_callback_dt(self->_spec, &data->cb_data);
-    gpio_pin_interrupt_configure_dt(self->_spec, GPIO_INT_DISABLE); // NOLINT(hicpp-signed-bitwise)
-    gpio_pin_configure_dt(self->_spec, GPIO_INPUT); // NOLINT(hicpp-signed-bitwise)
+    gpio_pin_interrupt_configure_dt(self->_spec, GPIO_INT_DISABLE); 
+    gpio_pin_configure_dt(self->_spec, GPIO_INPUT); 
     k_timer_start(&self->_debounce_timer, self->_debounce_time, K_NO_WAIT);
 
     self->_start_tp = UpTime::now();
@@ -82,12 +82,12 @@ Button::Button(gpio_dt_spec *spec, k_timeout_t debounce_time)
         throw ButtonError();
     }
 
-    if (gpio_pin_configure_dt(_spec, GPIO_INPUT) != 0) // NOLINT(hicpp-signed-bitwise)
+    if (gpio_pin_configure_dt(_spec, GPIO_INPUT) != 0) 
     {
         throw ButtonError();
     }
 
-    if (gpio_pin_interrupt_configure_dt(_spec, GPIO_INT_EDGE_RISING) != 0) // NOLINT(hicpp-signed-bitwise)
+    if (gpio_pin_interrupt_configure_dt(_spec, GPIO_INT_EDGE_RISING) != 0) 
     {
         throw ButtonError();
     }
@@ -118,7 +118,7 @@ auto Button::add_on_release_callback(std::function<void(void)> callback, std::ch
 
 Button::~Button()
 {
-    gpio_pin_interrupt_configure_dt(_spec, GPIO_INT_MODE_DISABLE_ONLY); // NOLINT(hicpp-signed-bitwise)
+    gpio_pin_interrupt_configure_dt(_spec, GPIO_INT_MODE_DISABLED); 
     gpio_remove_callback_dt(_spec, &_rising_cb_data.cb_data);
     gpio_remove_callback_dt(_spec,  &_falling_cb_data.cb_data);
 }
