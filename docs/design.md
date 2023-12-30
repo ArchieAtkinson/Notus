@@ -53,13 +53,3 @@ classDiagram
 
 ## Buttons
 
-Goals:
-- Debounce
-- Input Types
-  - Single/Shot Press
-  - Double Press
-  - Triple Press
-  - Long Press
-  - Longer Press? 
-  - On Press
-  - On Release?

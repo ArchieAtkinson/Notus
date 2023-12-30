@@ -13,8 +13,8 @@ class IButton
   public:
     IButton() = default;
     virtual ~IButton() = default;
-    virtual auto add_single_press_callback(std::function<void(void)> callback) -> void = 0;
-    // virtual auto add_long_press_callback(std::function<void(void)> callback, k_timeout_t press_duration) -> void = 0;
+    virtual auto add_on_press_callback(std::function<void(void)> callback) -> void = 0;
+    virtual auto add_on_release_callback(std::function<void(void)> callback, std::chrono::milliseconds press_duration) -> void = 0;
 
     IButton(const IButton &other) = delete;
     IButton(IButton&& other) noexcept = delete;
@@ -37,8 +37,8 @@ class Button final : public IButton
   public:
     Button() = delete;
     explicit Button(gpio_dt_spec *spec, k_timeout_t debounce_time);
-    auto add_single_press_callback(std::function<void(void)> callback) -> void final;
-    // auto add_long_press_callback(std::function<void(void)> callback, k_timeout_t press_duration) -> void final;
+    auto add_on_press_callback(std::function<void(void)> callback) -> void final;
+    auto add_on_release_callback(std::function<void(void)> callback, std::chrono::milliseconds press_duration) -> void final;
 
     Button(const Button &other) = delete;
     Button(Button&& other) noexcept = delete;
@@ -66,11 +66,10 @@ class Button final : public IButton
     k_timeout_t       _debounce_time;
 
     std::chrono::time_point<UpTime> _start_tp;
-    std::chrono::milliseconds _long_press_duration{0};
+    std::chrono::milliseconds _on_release_duration{0};
 
     k_timer _debounce_timer{};
-    k_timer _press_timer{};
-    std::function<void(void)> _single_press_callback;
-    std::function<void(void)> _long_press_callback;
+    std::function<void(void)> _on_press_callback;
+    std::function<void(void)> _on_release_callback;
 };
 
