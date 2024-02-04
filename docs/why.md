@@ -9,3 +9,5 @@ clang-tidy is a very useful static analyses tools that picks up on coding errors
 
  
 
+## Not using `required_snippets` in `testcases.yaml`
+Currently `required_snippets` only checks Zephyr Root and each test directory, therefore doesn't work with the current setup. Therefore we are using `set(SNIPPET "standard")` in the `CMakeLists.txt`

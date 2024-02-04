@@ -1,5 +1,5 @@
 tests:
-  subsy.button:
+  app.button:
     platform_allow:
       - native_sim
     integration_platforms:

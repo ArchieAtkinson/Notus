@@ -34,7 +34,7 @@
         },
 
 		{
-			"label": "Local Build Native Sim",
+			"label": "Local Testing Build Native Sim",
 			"type": "shell",
 			"group": {
 				"kind": "build",
@@ -48,14 +48,14 @@
 		},
         
 		{
-			"label": "Local Run Native Sim",
+			"label": "Local Testing Run Native Sim",
 			"type": "shell",
 			"group": {
 				"kind": "test",
 				"isDefault": true
 			},
 			"command": "(cd \"$(${workspaceFolder}/scripts/find_cmakelist.py)\"; build/zephyr/zephyr.exe)",
-            "dependsOn": ["Local Build Native Sim"],
+            "dependsOn": ["Local Testing Build Native Sim"],
             "options": {"cwd": "${fileDirname}"}
         },   
 
@@ -93,11 +93,12 @@
 		{
 			"label": "Run Native Tests",
 			"type": "shell",
-			"command": "${env:ZEPHYR_BASE}/scripts/twister",
+			"command": "twister",
 			"args": [
                 "-c",
+                "--coverage",
 				"-T",
-                "tests",
+                ".",
                 "--platform",
                 "native_sim"
 			],
