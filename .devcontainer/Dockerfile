@@ -20,6 +20,9 @@ ENV ZEPHYR_BASE=/home/user/zephyrproject/zephyr
 ENV ZEPHYR_TOOLCHAIN_VARIANT=zephyr
 ENV APPLICATION_ROOT=$ZEPHYR_BASE/application
 
+# Allow use of twister without long path
+ENV PATH="${PATH}:${ZEPHYR_BASE}/scripts"
+
 # Oh My Bash
 RUN bash -c "$(wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh -O -)"
 
