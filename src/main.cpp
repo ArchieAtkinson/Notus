@@ -1,36 +1,18 @@
+#include <iostream>
+
 #include <zephyr/kernel.h>
+
+#if defined(CONFIG_SOC_POSIX)
 #include "posix_board_if.h"
+#endif
 
-void thread1(void *a, void *b, void *c) {
-  
-    k_sleep(K_SECONDS(10));
-    while (true)
-    {
-        printk("Thread1\n");
-        k_busy_wait(100000);
-    }
-}
-
-K_THREAD_DEFINE(thread1_id, 500, thread1, NULL, NULL, NULL, 5, 0, 0);
-
-void thread2(void *a, void *b, void *c)
-{
-    while (true)
-    {
-        printk("Thread2\n");
-        k_busy_wait(100000);
-    }
-}
-K_THREAD_DEFINE(thread2_id, 500, thread2, NULL, NULL, NULL, 6, 0, 0);
 
 int main(void)
 {
-    printk("Hello! %s\n", CONFIG_BOARD);
-    
-    k_msleep(5000);
+    std::cout << "Hello, C++ world! " << CONFIG_BOARD << '\n';
 
-    printk("Done\n");
-
+#if defined(CONFIG_SOC_POSIX)
     posix_exit(0);
+#endif
     return 0;
 }
