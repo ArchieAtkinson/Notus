@@ -11,8 +11,17 @@ endfunction()
 
 function(SetupTarget target_name )
     target_include_directories(${target_name} PUBLIC $ENV{APPLICATION_ROOT}/includes)
-    target_compile_options(${target_name} PUBLIC -Wall -Wextra -Werror -Wshadow -Wdouble-promotion -Wno-invalid-offsetof)
 
+    target_compile_options(
+        ${target_name}
+        PUBLIC
+        -Wall
+        -Wextra
+        -Werror
+        -Wshadow
+        -Wdouble-promotion 
+        -Wno-invalid-offsetof
+    )
 
     add_custom_command(TARGET ${target_name} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E rm -f $ENV{APPLICATION_ROOT}/compile_commands.json
