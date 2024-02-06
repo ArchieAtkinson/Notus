@@ -2,14 +2,12 @@
 #include <chrono>
 
 #include <zephyr/drivers/gpio.h>
-#include <zephyr/logging/log.h>
 
+#include "logging.hpp"
 #include "button.hpp"
-#include "syscalls/kernel.h"
 #include "uptime_tp.hpp"
 
-LOG_MODULE_REGISTER(button, LOG_LEVEL_DBG); // NOLINT
-
+LOG_MODULE_REGISTER(button, LOG_LEVEL_DBG);
 
 void timer_expiry_func(struct k_timer *timer)
 {

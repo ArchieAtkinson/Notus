@@ -6,6 +6,7 @@
 #include "zephyr/kernel.h"
 #include "zephyr/sys_clock.h"
 
+#include "logging.hpp"
 #include "uptime_tp.hpp"
 
 class IButton
@@ -22,12 +23,21 @@ class IButton
     
 };
 
-struct ButtonError : public std::exception
+class ButtonError : public std::exception
 {
-	[[nodiscard]] const char * what () const noexcept final
-    {
-    	return "Button Error";
-    }
+    public:
+        ButtonError()
+        {
+            LOG_MODULE_DECLARE(button);
+            LOG_ERR("%s", error_message);
+        }
+        [[nodiscard]] const char * what () const noexcept final
+        {
+            return error_message;
+        }
+
+    private:
+        const char * error_message = "Button Error";
 };
 
 
