@@ -58,33 +58,6 @@ void Button::gpio_handler()
         k_timer_start(&_debounce_timer, _debounce_time, K_NO_WAIT);
         _start_tp = UpTime::now();
     }
-    // else
-    // {
-    //     int pin_state = gpio_pin_get_dt(_spec);
-    //     if (pin_state == 1)
-    //     {
-
-    //     }
-    //     else
-    //     {
-    //         _press_count++;
-
-    //         std::chrono::milliseconds time_since_pressed = UpTime::now() - _start_tp;
-
-    //         if (_on_release_callback && time_since_pressed >= _on_release_duration && _press_count == 1)
-    //         {
-    //             LOG_DBG("Calling on_release_callback"); 
-    //             _on_release_callback();
-    //         }
-            
-    //         if (_on_double_press_callback && _press_count == 2)
-    //         {
-    //             LOG_DBG("Calling _on_double_press_callback");
-    //             _on_double_press_callback();
-    //             _press_count = 0;
-    //         }
-    //     }
-    // }
     LOG_DBG("Exit"); 
 }
 
