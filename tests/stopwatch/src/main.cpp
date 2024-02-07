@@ -2,9 +2,9 @@
 #include <random>
 #include <ranges>
 
-
-#include <zephyr/ztest.h>
 #include <zephyr/kernel.h>
+
+#include "testing.hpp"
 
 #include "stopwatch.hpp"
 
@@ -119,4 +119,4 @@ ZTEST(stopwatch, test_start_and_get)
 	}
 }
 
-ZTEST_SUITE(stopwatch, NULL, NULL, NULL, NULL, NULL);
+ZTEST_SUITE(stopwatch, nullptr, nullptr, nullptr, nullptr, nullptr); // NOLINT

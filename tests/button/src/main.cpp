@@ -1,12 +1,15 @@
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/gpio/gpio_emul.h>
-#include <zephyr/ztest.h>
+
 #include <zephyr/kernel.h>
 
-#include "button.hpp"
-#include "zephyr/sys_clock.h"
+#include "testing.hpp"
 
-ZTEST(button, test_constructor_throw) // NOLINT
+#include "button.hpp"
+
+namespace {
+
+ZTEST(button, test_constructor_throw)
 {
     static struct gpio_dt_spec irq_pin = GPIO_DT_SPEC_GET(DT_INST(0, test_button), button_gpios);
     irq_pin.port->state->initialized   = false;
@@ -21,16 +24,16 @@ ZTEST(button, test_constructor_throw) // NOLINT
     }
     catch(...)
     {
-        zassert_unreachable(); // NOLINT    
+        zassert_unreachable();   
     }
 
-    zassert_true(exception_caught); // NOLINT
+    zassert_true(exception_caught);
 
     irq_pin.port->state->initialized  = true;
 }
 
 
-ZTEST(button, test_on_press_and_debounce) // NOLINT 
+ZTEST(button, test_on_press_and_debounce)
 {
     static struct gpio_dt_spec irq_pin = GPIO_DT_SPEC_GET(DT_INST(0, test_button), button_gpios);
 
@@ -53,12 +56,14 @@ ZTEST(button, test_on_press_and_debounce) // NOLINT
             gpio_emul_input_set(irq_pin.port, irq_pin.pin, 0);
         }
     };
-    debounce_sim(5);
 
-    zassert_equal(atomic_get(&cb_call_count), 1); // NOLINT
+    constexpr int estimate_debounce_time_ms = 5;
+    debounce_sim(estimate_debounce_time_ms);
+
+    zassert_equal(atomic_get(&cb_call_count), 1);
 }
 
-static void my_suite_before(void *fixture)
+void my_suite_before(void *fixture)
 {
     ARG_UNUSED(fixture);
     static struct gpio_dt_spec irq_pin = GPIO_DT_SPEC_GET(DT_INST(0, test_button), button_gpios);
@@ -67,4 +72,7 @@ static void my_suite_before(void *fixture)
     
 }
 
-ZTEST_SUITE(button, NULL, NULL, my_suite_before, NULL, NULL); // NOLINT
+ZTEST_SUITE(button, nullptr, nullptr, my_suite_before, nullptr, nullptr); // NOLINT
+
+
+} // namespace
