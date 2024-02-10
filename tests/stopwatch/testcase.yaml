@@ -1,5 +1,5 @@
 tests:
-  app.timer:
+  app.stopwatch:
     platform_allow:
       - native_sim
     integration_platforms:
