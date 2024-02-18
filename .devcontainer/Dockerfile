@@ -16,9 +16,10 @@ USER user
 
 # Configure environment variables
 ENV DISPLAY=:0
-ENV ZEPHYR_BASE=/home/user/zephyrproject/zephyr
+ENV WEST_WORKSPACE=/home/user/west-workspace
+ENV ZEPHYR_BASE=$WEST_WORKSPACE/zephyr
+ENV APPLICATION_ROOT=$WEST_WORKSPACE/application
 ENV ZEPHYR_TOOLCHAIN_VARIANT=zephyr
-ENV APPLICATION_ROOT=$ZEPHYR_BASE/application
 
 # Allow use of twister without long path
 ENV PATH="${PATH}:${ZEPHYR_BASE}/scripts"
@@ -26,19 +27,8 @@ ENV PATH="${PATH}:${ZEPHYR_BASE}/scripts"
 # Oh My Bash
 RUN bash -c "$(wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh -O -)"
 
-WORKDIR /home/user
+RUN mkdir -p $APPLICATION_ROOT
 
-# Install Zephyr
-RUN west init --mr v${ZEPHYR_VERSION} zephyrproject
-
-WORKDIR /home/user/zephyrproject
-
-RUN west update && \
-    west zephyr-export && \
-    pip3 install --user -r zephyr/scripts/requirements.txt
-
-WORKDIR /home/user/zephyrproject/zephyr
-
-RUN mkdir application
+WORKDIR $APPLICATION_ROOT
 
 CMD ["/bin/bash"]
