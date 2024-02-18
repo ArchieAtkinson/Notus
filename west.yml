@@ -2,6 +2,8 @@ manifest:
   remotes:
     - name: zephyrproject-rtos
       url-base: https://github.com/zephyrproject-rtos
+    - name: libfmt
+      url-base: https://github.com/fmtlib
   projects:
     - name: zephyr
       remote: zephyrproject-rtos
@@ -12,5 +14,9 @@ manifest:
         name-allowlist:
           - cmsis      # required by the ARM port
           - hal_nordic # required for Nordic
+    - name: fmt
+      remote: libfmt
+      revision: 10.2.1
+      path: modules/lib/fmt
   self:
     path: application
