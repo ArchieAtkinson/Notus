@@ -3,7 +3,6 @@
 #include "zephyr/drivers/adc.h"
 
 #include "logging.hpp"
-#include <cstddef>
 #include <cstdint>
 
 
