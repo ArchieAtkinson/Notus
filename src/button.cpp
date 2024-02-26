@@ -3,6 +3,7 @@
 
 #include <zephyr/drivers/gpio.h>
 
+#include "errors.hpp"
 #include "logging.hpp"
 #include "button.hpp"
 #include "uptime_tp.hpp"
@@ -64,22 +65,24 @@ Button::Button(gpio_dt_spec *spec, k_timeout_t debounce_time)
     : _spec{spec},
       _debounce_time{debounce_time}
 {
-
+    int ret = 0;
     assert(spec != nullptr);
 
     if (!gpio_is_ready_dt(_spec))
     {
-        throw ButtonError();
+        throw MajorError(ButtonError::init, 0);
     }
 
-    if (gpio_pin_configure_dt(_spec, GPIO_INPUT) != 0) 
+    ret = gpio_pin_configure_dt(_spec, GPIO_INPUT);
+    if (ret != 0) 
     {
-        throw ButtonError();
+        throw MajorError(ButtonError::pin_configuration, ret);
     }
 
-    if (gpio_pin_interrupt_configure_dt(_spec, GPIO_INT_EDGE_BOTH) != 0) 
+    ret = gpio_pin_interrupt_configure_dt(_spec, GPIO_INT_EDGE_BOTH);
+    if (ret != 0) 
     {
-        throw ButtonError();
+        throw MajorError(ButtonError::interrupt_configuration, ret);
     }
 
     k_timer_init(&_debounce_timer, timer_expiry_func, nullptr);
@@ -88,7 +91,11 @@ Button::Button(gpio_dt_spec *spec, k_timeout_t debounce_time)
     _cb_data.self   = this;
 
     gpio_init_callback(&_cb_data.cb_data, zephyr_callback, BIT(_spec->pin));
-    gpio_add_callback_dt(_spec, &_cb_data.cb_data);
+    ret = gpio_add_callback_dt(_spec, &_cb_data.cb_data);
+    if (ret != 0) 
+    {
+        throw MajorError(ButtonError::add_callback, ret);
+    }
 
 }
 
@@ -102,3 +109,54 @@ Button::~Button()
     gpio_pin_interrupt_configure_dt(_spec, GPIO_INT_MODE_DISABLED); 
     gpio_remove_callback_dt(_spec, &_cb_data.cb_data);
 }
+
+
+
+// namespace
+// { // anonymous namespace
+
+// struct FlightsErrCategory : std::error_category
+// {
+//   [[nodiscard]] const char* name() const noexcept override;
+//   [[nodiscard]] std::string message(int err_value) const override;
+//   [[nodiscard]] std::error_condition default_error_condition(int err_value) const noexcept override;
+// };
+
+// const char* FlightsErrCategory::name() const noexcept
+// {
+//   return "flights";
+// }
+    
+// std::string FlightsErrCategory::message(int ev) const
+// {
+//   switch (static_cast<FlightsErrc>(ev))
+//   {
+//   case FlightsErrc::NonexistentLocations:
+//     return "nonexistent airport name in request";
+     
+//   case FlightsErrc::DatesInThePast:
+//     return "request for a date from the past";
+    
+//   case FlightsErrc::InvertedDates:
+//     return "requested flight return date before departure date";
+    
+//   case FlightsErrc::NoFlightsFound:
+//     return "no filight combination found";
+    
+//   case FlightsErrc::ProtocolViolation:
+//     return "received malformed request";
+    
+//   case FlightsErrc::ConnectionError:
+//     return "could not connect to server";
+    
+//   case FlightsErrc::ResourceError:
+//     return "insufficient resources";
+    
+//   case FlightsErrc::Timeout:
+//     return "processing timed out";
+    
+//   default:
+//     return "(unrecognized error)";
+//   }
+// }
+// }

@@ -3,11 +3,14 @@
 
 #include <zephyr/kernel.h>
 
+#include "errors.hpp"
 #include "testing.hpp"
 
 #include "button.hpp"
 
-namespace {
+namespace
+{
+
 
 ZTEST(button, test_constructor_throw)
 {
@@ -18,8 +21,9 @@ ZTEST(button, test_constructor_throw)
     try {
         Button button(&irq_pin, K_MSEC(5));
     }
-    catch (const ButtonError &e)
+    catch (const MajorError &e)
     {
+        zassert_equal(e.code(), ButtonError::init);
         exception_caught = true;
     }
     catch(...)
@@ -69,7 +73,6 @@ void my_suite_before(void *fixture)
     static struct gpio_dt_spec irq_pin = GPIO_DT_SPEC_GET(DT_INST(0, test_button), button_gpios);
     gpio_pin_configure_dt(&irq_pin, GPIO_INPUT); 
     gpio_emul_input_set(irq_pin.port, irq_pin.pin, 0);
-    
 }
 
 ZTEST_SUITE(button, nullptr, nullptr, my_suite_before, nullptr, nullptr); // NOLINT

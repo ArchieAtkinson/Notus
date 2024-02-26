@@ -10,6 +10,7 @@ project(button)
 set(SOURCES 
     src/main.cpp
     $ENV{APPLICATION_ROOT}/src/button.cpp
+    $ENV{APPLICATION_ROOT}/src/button_error.cpp
 )
 
 target_sources(app PRIVATE ${SOURCES})

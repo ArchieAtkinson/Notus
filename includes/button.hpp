@@ -1,13 +1,29 @@
 #pragma once
 
 #include <functional>
+#include <system_error>
 
 #include "zephyr/drivers/gpio.h"
 #include "zephyr/kernel.h"
 #include "zephyr/sys_clock.h"
 
-#include "logging.hpp"
 #include "uptime_tp.hpp"
+
+enum class ButtonError
+{
+    init = 1,
+    pin_configuration,
+    interrupt_configuration,
+    add_callback,
+};
+
+namespace std
+{
+  template <>
+    struct is_error_code_enum<ButtonError> : true_type {};
+}
+
+std::error_code make_error_code(ButtonError);
 
 class IButton
 {
@@ -22,24 +38,6 @@ class IButton
     IButton& operator=(IButton&& other) noexcept = delete;
     
 };
-
-class ButtonError : public std::exception
-{
-    public:
-        ButtonError()
-        {
-            LOG_MODULE_DECLARE(button);
-            LOG_ERR("%s", error_message);
-        }
-        [[nodiscard]] const char * what () const noexcept final
-        {
-            return error_message;
-        }
-
-    private:
-        const char * error_message = "Button Error";
-};
-
 
 class Button final : public IButton
 {
