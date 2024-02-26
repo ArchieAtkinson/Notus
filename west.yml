@@ -2,6 +2,8 @@ manifest:
   remotes:
     - name: zephyrproject-rtos
       url-base: https://github.com/zephyrproject-rtos
+    - name: Neargye 
+      url-base: https://github.com/Neargye
   projects:
     - name: zephyr
       remote: zephyrproject-rtos
@@ -12,5 +14,8 @@ manifest:
         name-allowlist:
           - cmsis      # required by the ARM port
           - hal_nordic # required for Nordic
+    - name: magic_enum
+      remote: Neargye
+      revision: v0.9.5
   self:
     path: application
