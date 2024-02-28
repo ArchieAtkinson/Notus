@@ -13,6 +13,8 @@ As this is done at the preprocessor level this shouldn't have any effect on perf
 #define Z_LOG(_level, ...)                                                                                             \
     Z_LOG2(_level, 0, __log_current_const_data, __log_current_dynamic_data, __VA_ARGS__) // NOLINT
 
+#undef LOG_PRINTK
+#define LOG_PRINTK(...) Z_LOG_PRINTK(0, __VA_ARGS__) // NOLINT
 
 #undef LOG_MODULE_REGISTER
 #define LOG_MODULE_REGISTER(...)                                                                                       \
