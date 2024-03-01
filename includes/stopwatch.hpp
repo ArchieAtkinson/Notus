@@ -27,6 +27,6 @@ class Stopwatch : public IStopwatch
 
 	  private:
 	    std::chrono::time_point<UpTime> _start_tp;
-	    std::chrono::milliseconds _time_before_pause{0};
+	    std::chrono::microseconds _time_before_pause{0};
 	    bool _is_paused = false;
 };

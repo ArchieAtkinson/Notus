@@ -1,4 +1,5 @@
 #include "stopwatch.hpp"
+#include <chrono>
 
 auto Stopwatch::start() -> void
 {
@@ -23,12 +24,14 @@ auto Stopwatch::reset() -> void
 
 auto Stopwatch::get_time() -> std::chrono::milliseconds
 {
+    std::chrono::microseconds time_passed {};
     if (_is_paused)
     {
-        return _time_before_pause;
+        time_passed = _time_before_pause;
     }
     else
     {
-        return UpTime::now() - _start_tp + _time_before_pause;
+        time_passed = UpTime::now() - _start_tp + _time_before_pause;
     }
+    return std::chrono::duration_cast<std::chrono::milliseconds>(time_passed);
 }
