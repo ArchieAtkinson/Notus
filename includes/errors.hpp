@@ -1,10 +1,14 @@
 #pragma once
 
+#include <chrono>
 #include <source_location>
 #include <system_error>
+#include <array>
+
+#include "zephyr/kernel.h"
 
 #include "logging.hpp"
-#include "zephyr/kernel.h"
+#include "uptime_tp.hpp"
 
 class MajorError
 {
@@ -14,22 +18,17 @@ class MajorError
                         const std::source_location &loc = std::source_location::current())
         : _code{code}, _err_no{err_no}, _location{loc}
     {
-        uint32_t cycles = k_cycle_get_32();
-        uint32_t us_per_cycle = 1000000 / CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC;
-        uint32_t us = cycles * us_per_cycle;
-        uint32_t ms = us / 1000;
-        uint32_t seconds = ms / 1000;
-        uint32_t mins = seconds / 60;
-        uint32_t hours = mins / 60;
-
-        us %= 1000;
-        ms %= 1000;
-        seconds %= 60;
-        mins %= 60;
-        hours %= 24; // Assuming a 24-hour format
+        std::chrono::duration time_elapsed = UpTime::now().time_since_epoch();
+        std::chrono::hh_mm_ss formatted_time{time_elapsed};
+        uint32_t              microseconds = formatted_time.subseconds().count();
+        constexpr int         microseconds_in_millisecond = 1000;
+        constexpr int         milliseconds_in_seconds     = 1000;
+        uint32_t milliseconds = microseconds / microseconds_in_millisecond;
+        microseconds %= microseconds_in_millisecond;
+        milliseconds %= milliseconds_in_seconds;
 
         char timestamp[20];
-        (void)std::snprintf(timestamp, sizeof(timestamp), "[%02u:%02u:%02u.%03u,%03u]", hours, mins, seconds, ms, us);
+        (void)std::snprintf(timestamp, sizeof(timestamp), "[%02llu:%02llu:%02llu.%03u,%03u]", formatted_time.hours().count(), formatted_time.minutes().count(), formatted_time.seconds().count(), milliseconds, microseconds);
 
         LOG_PRINTK("\e[1;45m%s <exception>: %s:%d:%d\e[0m\n", timestamp, loc.file_name(), loc.line(), loc.column());
     }
