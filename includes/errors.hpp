@@ -3,9 +3,6 @@
 #include <chrono>
 #include <source_location>
 #include <system_error>
-#include <array>
-
-#include "zephyr/kernel.h"
 
 #include "logging.hpp"
 #include "uptime_tp.hpp"
