@@ -70,7 +70,7 @@ Button::Button(gpio_dt_spec *spec, k_timeout_t debounce_time)
 
     if (!gpio_is_ready_dt(_spec))
     {
-        throw MajorError(ButtonError::init, 0);
+        throw MajorError(ButtonError::gpio_is_ready, 0);
     }
 
     ret = gpio_pin_configure_dt(_spec, GPIO_INPUT);

@@ -11,7 +11,7 @@
 
 enum class ButtonError
 {
-    init = 1,
+    gpio_is_ready = 1,
     pin_configuration,
     interrupt_configuration,
     add_callback,
