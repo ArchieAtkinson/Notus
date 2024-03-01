@@ -1,9 +1,7 @@
 #pragma once
 
-#include <exception>
 #include <chrono>
 
-#include "logging.hpp"
 
 class IDisplay
 {
@@ -20,24 +18,6 @@ class IDisplay
     IDisplay& operator=(IDisplay&& other) noexcept = delete;
     
 };
-
-class DisplayError : public std::exception
-{
-    public:
-        DisplayError()
-        {
-            LOG_MODULE_DECLARE(display);
-            LOG_ERR("%s", error_message);
-        }
-        [[nodiscard]] const char * what () const noexcept final
-        {
-            return error_message;
-        }
-
-    private:
-        const char * error_message = "Display Error";
-};
-
 
 class Display final : public IDisplay
 {
