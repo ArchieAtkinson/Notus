@@ -23,7 +23,7 @@ ZTEST(button, test_constructor_throw)
     }
     catch (const MajorError &e)
     {
-        zassert_equal(e.code(), ButtonError::init);
+        zassert_equal(e.code(), ButtonError::is_ready);
         exception_caught = true;
     }
     catch(...)

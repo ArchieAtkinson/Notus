@@ -10,6 +10,7 @@ project(load_cell)
 set(SOURCES 
     src/main.cpp
     $ENV{APPLICATION_ROOT}/src/load_cell.cpp
+    $ENV{APPLICATION_ROOT}/src/load_cell_error.cpp
 )
 
 target_sources(app PRIVATE ${SOURCES})

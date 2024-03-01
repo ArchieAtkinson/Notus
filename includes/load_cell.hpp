@@ -1,12 +1,26 @@
 #pragma once
 
 #include <cstdint>
-#include <exception>
+#include <system_error>
 
 #include "zephyr/drivers/adc.h"
 
-#include "logging.hpp"
 
+enum class LoadCellError
+{
+    adc_is_ready = 1,
+    adc_channel_setup,
+    adc_read,
+    adc_raw_to_millivolt,
+};
+
+namespace std
+{
+  template <>
+    struct is_error_code_enum<LoadCellError> : true_type {};
+}
+
+std::error_code make_error_code(LoadCellError);
 
 class ILoadCell
 {
@@ -20,26 +34,6 @@ class ILoadCell
     ILoadCell& operator=(const ILoadCell &other) = delete;
     ILoadCell& operator=(ILoadCell&& other) noexcept = delete;
 };
-
-
-class LoadCellError : public std::exception
-{
-    public:
-        LoadCellError()
-        {
-            LOG_MODULE_DECLARE(load_cell);
-            LOG_ERR("%s", error_message);
-        }
-        [[nodiscard]] const char * what () const noexcept final
-        {
-            return error_message;
-        }
-
-    private:
-        const char * error_message = "Load Cell Error";
-};
-
-
 
 class LoadCell : public ILoadCell
 {

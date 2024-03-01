@@ -3,6 +3,7 @@
 #include <zephyr/drivers/adc/adc_emul.h>
 #include <zephyr/kernel.h>
 
+#include "errors.hpp"
 #include "testing.hpp"
 
 #include "load_cell.hpp"
@@ -30,14 +31,15 @@ ZTEST(load_cell, test_read)
 
 ZTEST(load_cell, test_constructor)
 {
-    auto try_and_catch_constructor = [&]()
+    auto try_and_catch_constructor = [&](LoadCellError error)
     {
         try
         {
             LoadCell load_cell(adc_spec, 1.0F);
         }
-        catch (const LoadCellError &except)
+        catch (const MajorError &except)
         {
+            zassert_equal(except.code(), error);
             return;
         }
         catch (...)
@@ -48,11 +50,11 @@ ZTEST(load_cell, test_constructor)
     };
     
     adc_spec.dev->state->initialized = false;
-    try_and_catch_constructor();
+    try_and_catch_constructor(LoadCellError::adc_is_ready);
     adc_spec.dev->state->initialized = true;
 
     adc_spec.channel_cfg_dt_node_exists = false;
-    try_and_catch_constructor();
+    try_and_catch_constructor(LoadCellError::adc_channel_setup);
     adc_spec.channel_cfg_dt_node_exists = true;
 
     try
