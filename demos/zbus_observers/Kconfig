@@ -1,0 +1,20 @@
+menu "Zephyr Kernel"
+    source "Kconfig.zephyr"
+endmenu
+
+
+config LISTENER
+	bool "Listener"
+	help
+	  Listener
+
+config MSG_SUB
+	bool "Msg Sub"
+	help
+	  Msg Sub
+
+
+config SUB
+	bool "Sub"
+	help
+	    Sub

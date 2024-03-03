@@ -1,0 +1,1 @@
+target_sources_ifdef(CONFIG_LISTENER app PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/listener.cpp)
