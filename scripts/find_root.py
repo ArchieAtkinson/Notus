@@ -3,18 +3,18 @@ import os
 import sys
 import unittest
 
-def find_cmake_lists_file(directory):
+def find_root_dir(directory):
     while directory and directory != "/":
-        cmake_lists_path = os.path.join(directory, "CMakeLists.txt")
-        if os.path.exists(cmake_lists_path):
+        prj_conf_path = os.path.join(directory, "prj.conf")
+        if os.path.exists(prj_conf_path):
             return os.path.abspath(directory)
         directory = os.path.dirname(directory)
     return None
 
 if __name__ == "__main__":
     current_directory = os.getcwd()
-    result = find_cmake_lists_file(current_directory)
+    result = find_root_dir(current_directory)
     if result:
         print(f"{result}")
     else:
-        print("CMakeLists.txt not found in any parent directory.")
+        print("prj.conf not found in any parent directory.")

@@ -40,7 +40,7 @@
 				"kind": "build",
 				"isDefault": true
 			},
-            "command": "(cd \"$(${workspaceFolder}/scripts/find_cmakelist.py)\"; west build -b native_sim -p auto)",
+            "command": "(cd \"$(${workspaceFolder}/scripts/find_root.py)\"; west build -b native_sim -p auto)",
 			"problemMatcher": [
 				"$gcc"
 			],
@@ -54,7 +54,7 @@
 				"kind": "test",
 				"isDefault": true
 			},
-			"command": "(cd \"$(${workspaceFolder}/scripts/find_cmakelist.py)\"; build/zephyr/zephyr.exe)",
+			"command": "(cd \"$(${workspaceFolder}/scripts/find_root.py)\"; build/zephyr/zephyr.exe)",
             "dependsOn": ["Local Testing Build Native Sim"],
             "options": {"cwd": "${fileDirname}"}
         },   
