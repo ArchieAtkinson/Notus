@@ -7,3 +7,12 @@ mkdir -p build
 cmake . -B build
 cd build
 sudo make install
+
+
+# Install expected
+PROJECT_DIR=$WEST_WORKSPACE/expected
+cd $PROJECT_DIR
+mkdir -p build
+cmake . -B build
+cd build
+sudo make install

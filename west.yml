@@ -4,6 +4,8 @@ manifest:
       url-base: https://github.com/zephyrproject-rtos
     - name: Neargye 
       url-base: https://github.com/Neargye
+    - name: TartanLlama 
+      url-base: https://github.com/TartanLlama
   projects:
     - name: zephyr
       remote: zephyrproject-rtos
@@ -17,5 +19,8 @@ manifest:
     - name: magic_enum
       remote: Neargye
       revision: v0.9.5
+    - name: expected
+      remote: TartanLlama
+      revision: v1.1.0
   self:
     path: application
