@@ -1,0 +1,9 @@
+menu "Zephyr Kernel"
+    source "Kconfig.zephyr"
+endmenu
+
+
+config MODULE1
+	bool "MODULE1"
+	help
+	  MODULE1
