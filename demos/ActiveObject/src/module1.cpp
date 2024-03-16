@@ -1,13 +1,12 @@
-#include <variant>
 #include <zephyr/sys/printk.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/kernel.h>
 
 #include "module1.hpp"
 
-K_THREAD_STACK_DEFINE(mod_1_stack, CONFIG_MAIN_STACK_SIZE);
+K_THREAD_STACK_DEFINE(mod_1_stack, CONFIG_MAIN_STACK_SIZE); // NOLINT
 
-Module1 mod_1("Module 1", mod_1_stack, 5);
+Module1 mod_1("Module 1", mod_1_stack, CONFIG_MAIN_STACK_SIZE ,5); // NOLINT
 
 Module1::SubHandler::SubHandler(Future<int> *fut, int a, int b) : BaseHandler(fut), _a{a}, _b{b}
 {
@@ -15,6 +14,7 @@ Module1::SubHandler::SubHandler(Future<int> *fut, int a, int b) : BaseHandler(fu
 void Module1::SubHandler::handle()
 {
     _fut->_ret = _a - _b;
+     
 }
 
 Module1::PrintHandler::PrintHandler(int a) : _a{a}
