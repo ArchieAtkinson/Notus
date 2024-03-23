@@ -1,10 +1,13 @@
 #!/bin/bash
+cd $APPLICATION_ROOT
+west init -l .
+west update
 
 # Install magic_enum
 PROJECT_DIR=$WEST_WORKSPACE/magic_enum
 cd $PROJECT_DIR
 mkdir -p build
-cmake . -B build
+cmake -DMAGIC_ENUM_OPT_BUILD_EXAMPLES=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF . -B build
 cd build
 sudo make install
 
@@ -13,6 +16,6 @@ sudo make install
 PROJECT_DIR=$WEST_WORKSPACE/expected
 cd $PROJECT_DIR
 mkdir -p build
-cmake . -B build
+cmake -DEXPECTED_BUILD_TESTS=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF . -B build
 cd build
 sudo make install

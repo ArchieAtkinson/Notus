@@ -1,15 +1,27 @@
 FROM zephyrprojectrtos/ci:v0.26.6
 
-ARG ZEPHYR_VERSION=3.5.0
+ENV NRF_CLI_VERSION=10.24.0
 
 # Adjust 'user' home directory permissions
 USER root
 
 RUN chown -R user:user /home/user
 
-RUN wget https://apt.llvm.org/llvm.sh
-RUN chmod +x llvm.sh
-RUN sudo ./llvm.sh 17 all
+RUN wget https://apt.llvm.org/llvm.sh && \
+    chmod +x llvm.sh && \
+    sudo ./llvm.sh 17 all
+
+RUN VERSION_DASHES=$(echo ${NRF_CLI_VERSION} | tr '.' '-') && \
+    wget https://nsscprodmedia.blob.core.windows.net/prod/software-and-other-downloads/desktop-software/nrf-command-line-tools/sw/versions-10-x-x/$VERSION_DASHES/nrf-command-line-tools_${NRF_CLI_VERSION}_amd64.deb && \
+    sudo apt-get install -y ./nrf-command-line-tools_${NRF_CLI_VERSION}_amd64.deb && \
+    sudo rm ./nrf-command-line-tools_${NRF_CLI_VERSION}_amd64.deb && \
+    mkdir jlink_unpacked && \
+    dpkg-deb -R /opt/nrf-command-line-tools/share/JLink*.deb jlink_unpacked && \
+    rm jlink_unpacked/DEBIAN/postinst && \
+    dpkg-deb -b jlink_unpacked jlink_fixed.deb && \
+    apt-get install -y ./jlink_fixed.deb
+
+RUN apt-get install -y minicom
 
 # Switch to 'user' context
 USER user
@@ -30,5 +42,12 @@ RUN bash -c "$(wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master
 RUN mkdir -p $APPLICATION_ROOT
 
 WORKDIR $APPLICATION_ROOT
+
+COPY west.yml .
+COPY scripts/install.sh . 
+
+RUN ./install.sh && \
+    rm install.sh && \
+    rm west.yml
 
 CMD ["/bin/bash"]

@@ -1,7 +1,8 @@
 {
 	"name": "Zephyr",
 	"build": {
-		"dockerfile": "Dockerfile"
+		"dockerfile": "Dockerfile",
+        "context": ".."
 	},
     "postAttachCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}/..",
 	"remoteUser": "user",
@@ -26,5 +27,5 @@
     "workspaceMount": "source=${localWorkspaceFolder},target=/home/user/west-workspace/application,type=bind", 
     "workspaceFolder": "/home/user/west-workspace/application",
 
-    "runArgs": ["--privileged"]
+    "runArgs": ["--privileged", "-v", "/dev:/dev"]
 }   
