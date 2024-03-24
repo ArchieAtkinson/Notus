@@ -19,3 +19,11 @@ mkdir -p build
 cmake -DEXPECTED_BUILD_TESTS=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF . -B build
 cd build
 sudo make install
+
+# Install etl
+PROJECT_DIR=$WEST_WORKSPACE/etl
+cd $PROJECT_DIR
+mkdir -p build
+cmake . -B build
+cd build
+sudo make install

@@ -6,6 +6,8 @@ manifest:
       url-base: https://github.com/Neargye
     - name: TartanLlama 
       url-base: https://github.com/TartanLlama
+    - name: embedded-template-library 
+      url-base: https://github.com/ETLCPP
   projects:
     - name: zephyr
       remote: zephyrproject-rtos
@@ -22,5 +24,8 @@ manifest:
     - name: expected
       remote: TartanLlama
       revision: v1.1.0
+    - name: etl
+      remote: embedded-template-library 
+      revision: 20.38.10
   self:
     path: application
