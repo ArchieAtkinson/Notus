@@ -5,7 +5,9 @@
 
     "clangd.arguments": [
         "--clang-tidy",
-        "--compile-commands-dir=$APPLICATION_ROOT"
+        "--compile-commands-dir=$APPLICATION_ROOT",
+        "--malloc-trim",
+        "--pch-storage=memory",
     ],
     "clangd.fallbackFlags": [
         "--compile-commands-dir=build"
