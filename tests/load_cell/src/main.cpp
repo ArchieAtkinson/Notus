@@ -13,7 +13,7 @@ namespace
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-    struct adc_dt_spec adc_spec = ADC_DT_SPEC_GET_BY_IDX(DT_PATH(zephyr_user), 0);
+    struct adc_dt_spec adc_spec = ADC_DT_SPEC_GET_BY_IDX(DT_PATH(zephyr_user), 0); // NOLINT
 #pragma GCC diagnostic pop
 
 ZTEST(load_cell, test_read)

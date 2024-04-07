@@ -116,7 +116,7 @@ ZTEST(stopwatch, test_start_and_get)
 
     auto duration = stop_watch.get_time();
 
-    std::cout << (duration - long_wait).count() << std::endl;
+    std::cout << (duration - long_wait).count() << "\n";
     
     zassert_within(duration, long_wait, millis(1)); 
 }

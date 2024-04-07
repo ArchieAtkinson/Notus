@@ -21,9 +21,9 @@ std::string ButtonErrorCategory::message(int err_value) const {
 
     if (errorName.empty()) {
         return "(unrecognized error)";
-    } else {
-        return std::string(errorName);
     }
+
+    return std::string(errorName);
 }
  
 const ButtonErrorCategory theButtonErrorCategory {};

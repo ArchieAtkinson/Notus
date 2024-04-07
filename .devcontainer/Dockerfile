@@ -1,6 +1,7 @@
 FROM zephyrprojectrtos/ci:v0.26.6
 
 ENV NRF_CLI_VERSION=10.24.0
+ENV LLVM_VERSION=17
 
 # Adjust 'user' home directory permissions
 USER root
@@ -9,7 +10,11 @@ RUN chown -R user:user /home/user
 
 RUN wget https://apt.llvm.org/llvm.sh && \
     chmod +x llvm.sh && \
-    sudo ./llvm.sh 17 all
+    sudo ./llvm.sh ${LLVM_VERSION} all
+
+RUN sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-${LLVM_VERSION} 10 && \
+    sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-${LLVM_VERSION} 10
+
 
 RUN VERSION_DASHES=$(echo ${NRF_CLI_VERSION} | tr '.' '-') && \
     wget https://nsscprodmedia.blob.core.windows.net/prod/software-and-other-downloads/desktop-software/nrf-command-line-tools/sw/versions-10-x-x/$VERSION_DASHES/nrf-command-line-tools_${NRF_CLI_VERSION}_amd64.deb && \
@@ -21,7 +26,15 @@ RUN VERSION_DASHES=$(echo ${NRF_CLI_VERSION} | tr '.' '-') && \
     dpkg-deb -b jlink_unpacked jlink_fixed.deb && \
     apt-get install -y ./jlink_fixed.deb
 
-RUN apt-get install -y minicom
+RUN apt-get install -y \
+    cppcheck \
+    minicom
+
+
+ENV CLANGD_TIDY_DIR=/opt/clangd-tidy
+RUN sudo git clone -b pretty-output https://github.com/ArchieAtkinson/clangd-tidy.git ${CLANGD_TIDY_DIR}
+
+ENV PATH="${PATH}:${CLANGD_TIDY_DIR}"
 
 # Switch to 'user' context
 USER user

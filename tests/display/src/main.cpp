@@ -10,9 +10,10 @@ ZTEST(display, test_all)
 {
 
     Display display{};
-
-    display.set_weight_grams(15.5);
-    display.set_time(65s);
+    constexpr double test_weight = 15.5;
+    display.set_weight_grams(test_weight);
+    auto test_time = 65s;
+    display.set_time(test_time);
     
 }
 

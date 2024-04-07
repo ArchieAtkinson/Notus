@@ -1,4 +1,3 @@
-#include <cstdint>
 #include <zephyr/drivers/display.h>
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>

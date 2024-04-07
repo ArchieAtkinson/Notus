@@ -15,3 +15,5 @@ set(SOURCES
 
 target_sources(app PRIVATE ${SOURCES})
 SetupTarget(app)
+
+RunClangdTidy(app "${SOURCES}")
