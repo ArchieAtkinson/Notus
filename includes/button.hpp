@@ -73,7 +73,5 @@ class Button final : public IButton
 
     k_timer _debounce_timer{};
     std::function<void(void)> _on_press_callback;
-
-    int _press_count = 0;
 };
 
