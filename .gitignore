@@ -3,3 +3,4 @@ build*
 twister-out*
 scripts/__pycache__
 compile_commands.json
+*flash.bin

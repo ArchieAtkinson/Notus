@@ -18,6 +18,7 @@ manifest:
         name-allowlist:
           - cmsis      # required by the ARM port
           - hal_nordic # required for Nordic
+          - littlefs
     - name: magic_enum
       remote: Neargye
       revision: v0.9.5
