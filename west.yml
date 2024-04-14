@@ -14,11 +14,11 @@ manifest:
       revision: v3.6.0
       import:
         # By using name-allowlist we can clone only the modules that are
-        # strictly needed by the application.
+        # strictly needed
         name-allowlist:
           - cmsis      # required by the ARM port
           - hal_nordic # required for Nordic
-          - littlefs
+          - littlefs   # required for file system
     - name: magic_enum
       remote: Neargye
       revision: v0.9.5

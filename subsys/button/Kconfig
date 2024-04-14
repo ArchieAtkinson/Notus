@@ -1,0 +1,13 @@
+menuconfig BUTTON
+	bool "Button Interface"
+	select GPIO
+	help
+        Provides mechanism to handle a range of button inputs
+
+if BUTTON
+
+module = BUTTON
+module-str = button
+source "subsys/logging/Kconfig.template.log_config"
+
+endif # BUTTON

@@ -1,0 +1,5 @@
+menu "Zephyr Playground"
+
+rsource "subsys/Kconfig"
+
+endmenu

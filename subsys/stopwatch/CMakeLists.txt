@@ -1,0 +1,1 @@
+gen_lib_sources_ifdef(CONFIG_STOPWATCH stopwatch.cpp)

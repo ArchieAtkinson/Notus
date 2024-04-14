@@ -1,40 +1,8 @@
 {
 	"version": "2.0.0",
 	"tasks": [
-
 		{
-			"label": "Build Native Sim",
-			"type": "shell",
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"command": "west",
-			"args": [
-				"build",
-				"-p",
-				"auto",
-				"-b",
-				"native_sim"
-			],
-			"problemMatcher": [
-				"$gcc"
-			]
-		},
-
-		{
-			"label": "Run Native Sim",
-			"type": "shell",
-			"group": {
-				"kind": "none",
-				"isDefault": true
-			},
-			"command": "build/zephyr/zephyr.exe",
-            "dependsOn": ["Build Native Sim"]
-        },
-
-		{
-			"label": "Local Testing Build Native Sim",
+			"label": "Build Local Native Sim",
 			"type": "shell",
 			"group": {
 				"kind": "build",
@@ -48,14 +16,14 @@
 		},
         
 		{
-			"label": "Local Testing Run Native Sim",
+			"label": "Run Local Native Sim",
 			"type": "shell",
 			"group": {
 				"kind": "test",
 				"isDefault": true
 			},
 			"command": "(cd \"$(${workspaceFolder}/scripts/find_root.py)\"; build/zephyr/zephyr.exe)",
-            "dependsOn": ["Local Testing Build Native Sim"],
+            "dependsOn": ["Build Local Native Sim"],
             "options": {"cwd": "${fileDirname}"}
         },   
 
@@ -125,6 +93,15 @@
 				"auto",
 				"always",
 				"never"
+			]
+		},
+		{
+			"id": "application",
+			"type": "pickString",
+			"description": "Choose which application to build",
+			"default": "auto",
+			"options": [
+				"coffee_scale",
 			]
 		}
 	]

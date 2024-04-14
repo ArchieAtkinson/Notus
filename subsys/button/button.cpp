@@ -8,7 +8,7 @@
 #include "button.hpp"
 #include "uptime_tp.hpp"
 
-LOG_MODULE_REGISTER(button, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(button, CONFIG_BUTTON_LOG_LEVEL);
 
 void timer_expiry_func(struct k_timer *timer)
 {
@@ -35,7 +35,6 @@ void zephyr_callback(const struct device *port, struct gpio_callback *callback, 
     ARG_UNUSED(callback);
 
     LOG_DBG("Enter");
-
 
     auto *data = CONTAINER_OF(callback, Button::CallbackContainer, cb_data); // NOLINT
     Button *self = data->self;

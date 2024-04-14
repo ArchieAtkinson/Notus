@@ -9,7 +9,7 @@ project(display)
 
 set(SOURCES 
     src/main.cpp
-    $ENV{APPLICATION_ROOT}/src/display.cpp
+    $ENV{APPLICATION_ROOT}/applications/coffee_scale/src/display.cpp
 )
 
 target_sources(app PRIVATE ${SOURCES})

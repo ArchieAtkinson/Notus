@@ -1,0 +1,13 @@
+menuconfig LOAD_CELL
+	bool "Load cell"
+    select ADC
+	help
+        Provides a simple load cell API
+
+if LOAD_CELL
+
+module = LOAD_CELL
+module-str = load cell
+source "subsys/logging/Kconfig.template.log_config"
+
+endif # LOAD_CELL

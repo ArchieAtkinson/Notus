@@ -1,0 +1,13 @@
+menuconfig FILE_SYSTEM_WRAP
+	bool "Wrapper for the file system API"
+	select FILE_SYSTEM
+	help
+        Provides mechanism to handle a range of button inputs
+
+if FILE_SYSTEM_WRAP
+
+module = FILE_SYSTEM_WRAP
+module-str = file_system_wrap
+source "subsys/logging/Kconfig.template.log_config"
+
+endif # FILE_SYSTEM_WRAP

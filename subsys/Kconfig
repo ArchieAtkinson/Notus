@@ -1,0 +1,8 @@
+menu "Subsystems"
+
+rsource "button/Kconfig"
+rsource "file_system/Kconfig"
+rsource "stopwatch/Kconfig"
+rsource "load_cell/Kconfig"
+
+endmenu

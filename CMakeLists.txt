@@ -1,14 +1,11 @@
-cmake_minimum_required(VERSION 3.20.0)
-list(APPEND CMAKE_MODULE_PATH "$ENV{APPLICATION_ROOT}/cmake")
 include(Util)
+include(Sys)
 
-ProjectSetup("standard")
+zephyr_library_named(gen_lib)
+gen_lib_compile_options(${SYS_COMPILE_FLAGS})
 
-find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
-project(application)
+zephyr_include_directories(include)
 
-set(SOURCES 
-    src/main.cpp
-)
-target_sources(app PRIVATE ${SOURCES})
-SetupTarget(app)
+add_subdirectory(subsys)
+
+RunClangdTidy(gen_lib "${GEN_LIB_SAUCES}")

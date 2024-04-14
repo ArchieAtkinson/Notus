@@ -1,3 +1,13 @@
+set(SYS_COMPILE_FLAGS 
+    -Wall
+    -Wextra
+    -Werror
+    -Wshadow
+    -Wdouble-promotion
+    -Wno-invalid-offsetof
+    CACHE STRING "SYS_COMPILE_FLAGS"
+)
+
 function(ProjectSetup snippets)
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON PARENT_SCOPE)
     set(CMAKE_CXX_STANDARD 20 PARENT_SCOPE)
@@ -8,19 +18,13 @@ function(ProjectSetup snippets)
     set(SNIPPET ${snippets} PARENT_SCOPE)
 endfunction()
 
-
 function(SetupTarget target_name)
     target_include_directories(${target_name} PUBLIC $ENV{APPLICATION_ROOT}/includes)
 
     target_compile_options(
         ${target_name}
         PUBLIC
-        -Wall
-        -Wextra
-        -Werror
-        -Wshadow
-        -Wdouble-promotion 
-        -Wno-invalid-offsetof
+        ${SYS_COMPILE_FLAGS}
     )
 
     add_custom_command(TARGET ${target_name} POST_BUILD

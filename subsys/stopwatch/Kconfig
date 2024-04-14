@@ -1,0 +1,12 @@
+menuconfig STOPWATCH
+	bool "Stopwatch"
+	help
+        Provides a simple stopwatch API
+
+if STOPWATCH
+
+module = STOPWATCH
+module-str = stopwatch
+source "subsys/logging/Kconfig.template.log_config"
+
+endif # STOPWATCH

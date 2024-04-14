@@ -9,7 +9,6 @@ project(stopwatch)
 
 set(SOURCES 
     src/main.cpp
-    $ENV{APPLICATION_ROOT}/src/stopwatch.cpp
 )
 
 target_sources(app PRIVATE ${SOURCES})

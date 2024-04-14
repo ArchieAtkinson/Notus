@@ -1,0 +1,4 @@
+add_subdirectory_ifdef(CONFIG_BUTTON button)
+add_subdirectory_ifdef(CONFIG_FILE_SYSTEM_WRAP file_system)
+add_subdirectory_ifdef(CONFIG_STOPWATCH stopwatch)
+add_subdirectory_ifdef(CONFIG_LOAD_CELL load_cell)
