@@ -1,1 +1,1 @@
-gen_lib_sources_ifdef(CONFIG_FILE_SYSTEM_WRAP file_system.cpp file_system_error.cpp)
+notus_lib_sources_ifdef(CONFIG_FILE_SYSTEM_WRAP file_system.cpp file_system_error.cpp)

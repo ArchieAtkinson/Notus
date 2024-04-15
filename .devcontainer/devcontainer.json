@@ -24,8 +24,8 @@
             }
 		}
 	},
-    "workspaceMount": "source=${localWorkspaceFolder},target=/home/user/west-workspace/application,type=bind", 
-    "workspaceFolder": "/home/user/west-workspace/application",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/user/west-workspace/notus,type=bind", 
+    "workspaceFolder": "/home/user/west-workspace/notus",
 
     "runArgs": ["--privileged", "-v", "/dev:/dev"]
 }   

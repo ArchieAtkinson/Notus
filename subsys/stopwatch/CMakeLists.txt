@@ -1,1 +1,1 @@
-gen_lib_sources_ifdef(CONFIG_STOPWATCH stopwatch.cpp)
+notus_lib_sources_ifdef(CONFIG_STOPWATCH stopwatch.cpp)

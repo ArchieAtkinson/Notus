@@ -5,7 +5,7 @@
 
     "clangd.arguments": [
         "--clang-tidy",
-        "--compile-commands-dir=${env:APPLICATION_ROOT}",
+        "--compile-commands-dir=${env:NOTUS_ROOT}",
         "--malloc-trim",
         "--pch-storage=memory",
     ],

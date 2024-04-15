@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20.0)
-list(APPEND CMAKE_MODULE_PATH "$ENV{APPLICATION_ROOT}/cmake")
+list(APPEND CMAKE_MODULE_PATH "$ENV{NOTUS_ROOT}/cmake")
 include(Util)
 
 ProjectSetup("standard;testing")
@@ -9,7 +9,7 @@ project(display)
 
 set(SOURCES 
     src/main.cpp
-    $ENV{APPLICATION_ROOT}/applications/coffee_scale/src/display.cpp
+    $ENV{COFFEE_SCALE_ROOT}/src/display.cpp
 )
 
 target_sources(app PRIVATE ${SOURCES})

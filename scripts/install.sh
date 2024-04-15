@@ -1,5 +1,5 @@
 #!/bin/bash
-cd $APPLICATION_ROOT
+cd $NOTUS_ROOT
 west init -l .
 west update
 

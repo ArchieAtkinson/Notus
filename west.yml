@@ -29,4 +29,4 @@ manifest:
       remote: embedded-template-library 
       revision: 20.38.10
   self:
-    path: application
+    path: notus

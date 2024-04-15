@@ -1,1 +1,1 @@
-gen_lib_sources_ifdef(CONFIG_BUTTON button.cpp button_error.cpp)
+notus_lib_sources_ifdef(CONFIG_BUTTON button.cpp button_error.cpp)

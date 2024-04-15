@@ -1,1 +1,1 @@
-gen_lib_sources_ifdef(CONFIG_LOAD_CELL load_cell.cpp load_cell_error.cpp)
+notus_lib_sources_ifdef(CONFIG_LOAD_CELL load_cell.cpp load_cell_error.cpp)

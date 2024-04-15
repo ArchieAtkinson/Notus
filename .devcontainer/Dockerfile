@@ -43,7 +43,8 @@ USER user
 ENV DISPLAY=:0
 ENV WEST_WORKSPACE=/home/user/west-workspace
 ENV ZEPHYR_BASE=$WEST_WORKSPACE/zephyr
-ENV APPLICATION_ROOT=$WEST_WORKSPACE/application
+ENV NOTUS_ROOT=$WEST_WORKSPACE/notus
+ENV COFFEE_SCALE_ROOT=$NOTUS_ROOT/applications/coffee_scale
 ENV ZEPHYR_TOOLCHAIN_VARIANT=zephyr
 
 # Allow use of twister without long path
@@ -52,9 +53,9 @@ ENV PATH="${PATH}:${ZEPHYR_BASE}/scripts"
 # Oh My Bash
 RUN bash -c "$(wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh -O -)"
 
-RUN mkdir -p $APPLICATION_ROOT
+RUN mkdir -p $NOTUS_ROOT
 
-WORKDIR $APPLICATION_ROOT
+WORKDIR $NOTUS_ROOT
 
 COPY west.yml .
 COPY scripts/install.sh . 
