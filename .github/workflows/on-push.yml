@@ -73,11 +73,10 @@ jobs:
         run: |
           mv $GITHUB_WORKSPACE/* /home/user/west-workspace/notus
           mv $GITHUB_WORKSPACE/.[!.]* /home/user/west-workspace/notus
-      - name: 
-        run: |
           chmod 777 -R /home/user/west-workspace/notus
           echo "ZEPHYR_SDK_INSTALL_DIR=/opt/toolchains/zephyr-sdk-$ZSDK_VERSION" >> $GITHUB_ENV
           git config --global --add safe.directory "*"
+          west update
         
       - name: Make west happy
         run: west update
