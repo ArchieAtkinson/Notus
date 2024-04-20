@@ -64,4 +64,6 @@ RUN ./install.sh && \
     rm install.sh && \
     rm west.yml
 
+USER root
+
 CMD ["/bin/bash"]
