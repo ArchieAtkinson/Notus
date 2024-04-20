@@ -47,17 +47,18 @@ function(RunClangdTidy target sources)
 endfunction()
 
 function(RunClangTidy target)
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/clang-tidy-cc)
-
-    add_custom_command(TARGET ${target} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/clang-tidy-cc/compile_commands.json
-        COMMAND $ENV{NOTUS_ROOT}/scripts/prepare_cc_for_clang_tidy.py 
-            ${CMAKE_BINARY_DIR}/compile_commands.json
-            ${CMAKE_BINARY_DIR}/clang-tidy-cc/compile_commands.json
-        COMMAND run-clang-tidy-17
-            -p ${CMAKE_BINARY_DIR}/clang-tidy-cc
-            -quiet
-        BYPRODUCTS ${CMAKE_BINARY_DIR}/clang-tidy-cc/compile_commands.json
-        DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
+    add_custom_target(ClangTidy ALL
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/clang-tidy-cc/compile_commands.json
+    COMMAND $ENV{NOTUS_ROOT}/scripts/prepare_cc_for_clang_tidy.py 
+        ${CMAKE_BINARY_DIR}/compile_commands.json
+        ${CMAKE_BINARY_DIR}/clang-tidy-cc/compile_commands.json
+    COMMAND run-clang-tidy-17
+        -p ${CMAKE_BINARY_DIR}/clang-tidy-cc
+        -quiet
+    BYPRODUCTS ${CMAKE_BINARY_DIR}/clang-tidy-cc/compile_commands.json
+    DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
     )
+
+    add_dependencies(${target} ClangTidy)
+    add_dependencies(notus_lib ClangTidy)
 endfunction()
