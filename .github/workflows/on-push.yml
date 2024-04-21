@@ -2,16 +2,22 @@ name: On Push
 on: [push]
 
 jobs:
-  ImageTag:
+  ImageName:
     runs-on: ubuntu-latest
     outputs:
-      docker-image: ${{ steps.image-tag.outputs.tag }}
+      branch-image: ${{ steps.branch-image.outputs.img }}
+      trunk-image: ${{ steps.trunk-image.outputs.img }}
     steps:
-      - name: Lowercase Image Tag
-        id: image-tag
+      - name: Branch Image
+        id: branch-image
         run: |
           IMAGE_TAG_LOWER=$(echo "${{ github.event.repository.name }}:${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]')
-          echo "::set-output name=tag::ghcr.io/archieatkinson/$IMAGE_TAG_LOWER"
+          echo "::set-output name=img::ghcr.io/archieatkinson/$IMAGE_TAG_LOWER"
+
+      - name: Trunk Image
+        id: trunk-image
+        run: |
+          echo "::set-output name=img::ghcr.io/archieatkinson/trunk"
 
   Docker:
     runs-on: ubuntu-latest
@@ -48,14 +54,22 @@ jobs:
           context: .
           push: true
           file: .devcontainer/Dockerfile
-          tags: ${{needs.ImageTag.outputs.docker-image}}
+          tags: ${{needs.ImageName.outputs.branch-image}}
+
+      - name: Select New Dockerfile
+        if: steps.Has-dockerfile-changed.outputs.any_changed == 'true'
+        run: echo "IMAGE_TO_USE=${{needs.ImageName.outputs.branch-image}}" >> $GITHUB_ENV
+
+      - name: Select New Dockerfile
+        if: steps.Has-dockerfile-changed.outputs.any_changed != 'true'
+        run: echo "IMAGE_TO_USE=${{needs.ImageName.outputs.trunk-image}}" >> $GITHUB_ENV
 
 
   Build:
-    needs: [Docker, ImageTag]
+    needs: [Docker, ImageName]
     runs-on: ubuntu-latest
     container:
-      image: ${{needs.ImageTag.outputs.docker-image}}
+      image: ${{needs.ImageName.outputs.branch-image}}
       credentials:
         username: ${{github.actor}}
         password: ${{ secrets.GITHUB_TOKEN }}
