@@ -1,6 +1,11 @@
 name: On Push
 on: [push]
 
+
+env:
+  IMAGE_TO_USE: ghcr.io/archieatkinson/trunk
+
+
 jobs:
   ImageName:
     runs-on: ubuntu-latest
@@ -13,11 +18,6 @@ jobs:
         run: |
           IMAGE_TAG_LOWER=$(echo "${{ github.event.repository.name }}:${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]')
           echo "::set-output name=img::ghcr.io/archieatkinson/$IMAGE_TAG_LOWER"
-
-      - name: Trunk Image
-        id: trunk-image
-        run: |
-          echo "::set-output name=img::ghcr.io/archieatkinson/trunk"
 
   Docker:
     runs-on: ubuntu-latest
@@ -58,11 +58,7 @@ jobs:
 
       - name: Select New Image
         if: steps.Has-dockerfile-changed.outputs.any_changed == 'true'
-        run: echo "IMAGE_TO_USE=${{needs.ImageName.outputs.branch-image}}" >> $GITHUB_ENV
-
-      - name: Select Trunk Image
-        if: steps.Has-dockerfile-changed.outputs.any_changed != 'true'
-        run: echo "IMAGE_TO_USE=${{needs.ImageName.outputs.trunk-image}}" >> $GITHUB_ENV
+        run: echo "IMAGE_TO_USE=${{needs.ImageName.outputs.branch-image}}"
 
 
   Build:
