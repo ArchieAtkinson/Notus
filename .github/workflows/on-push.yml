@@ -53,10 +53,18 @@ jobs:
           file: .devcontainer/Dockerfile
           tags: ${{needs.ImageName.outputs.branch-image}}
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{needs.ImageName.outputs.branch-image}}    
+
       - name: Select New Image
         id: image-to-use
         run: |
             if [[ "${{ steps.Has-dockerfile-changed.outputs.any_changed }}" == "true" ]]; then
+              echo "NAME=${{needs.ImageName.outputs.branch-image}}" >> "$GITHUB_OUTPUT"
+            elif echo "${{ steps.meta.outputs.tags }}" | grep -q "${{ github.ref_name }}"; than
               echo "NAME=${{needs.ImageName.outputs.branch-image}}" >> "$GITHUB_OUTPUT"
             else
               echo "NAME=ghcr.io/archieatkinson/trunk" >> "$GITHUB_OUTPUT"
