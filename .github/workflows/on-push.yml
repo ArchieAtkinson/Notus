@@ -69,7 +69,7 @@ jobs:
     needs: [Docker, ImageName]
     runs-on: ubuntu-latest
     container:
-      image: ${{ IMAGE_TO_USE }}
+      image: ${{ env.IMAGE_TO_USE }}
       credentials:
         username: ${{github.actor}}
         password: ${{ secrets.GITHUB_TOKEN }}
