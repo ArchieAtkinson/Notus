@@ -28,7 +28,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
         id: last_successful_commit_push
         with:
-          main-branch-name: trunk
+          main-branch-name: ${{ github.ref_name }}
 
       - name: Has dockerfile changed
         id: Has-dockerfile-changed
