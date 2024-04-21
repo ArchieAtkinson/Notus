@@ -2,16 +2,11 @@ name: On Push
 on: [push]
 
 
-env:
-  IMAGE_TO_USE: ghcr.io/archieatkinson/trunk
-
-
 jobs:
   ImageName:
     runs-on: ubuntu-latest
     outputs:
       branch-image: ${{ steps.branch-image.outputs.img }}
-      trunk-image: ${{ steps.trunk-image.outputs.img }}
     steps:
       - name: Branch Image
         id: branch-image
@@ -22,6 +17,8 @@ jobs:
   Docker:
     runs-on: ubuntu-latest
     needs: [ImageName]
+    outputs:
+      image: ${{ steps.image-to-use.outputs.NAME }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -57,15 +54,20 @@ jobs:
           tags: ${{needs.ImageName.outputs.branch-image}}
 
       - name: Select New Image
-        if: steps.Has-dockerfile-changed.outputs.any_changed == 'true'
-        run: echo "IMAGE_TO_USE=${{needs.ImageName.outputs.branch-image}} >> $GITHUB_ENV"
+        id: image-to-use
+        run: |
+            if [[ "${{ steps.Has-dockerfile-changed.outputs.any_changed }}" == "true" ]]; then
+              echo "NAME=${{needs.ImageName.outputs.branch-image}}" >> "$GITHUB_OUTPUT"
+            else
+              echo "NAME=ghcr.io/archieatkinson/trunk" >> "$GITHUB_OUTPUT"
+            fi
 
 
   Build:
     needs: [Docker, ImageName]
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.IMAGE_TO_USE }}
+      image: ${{needs.Docker.outputs.image}}
       credentials:
         username: ${{github.actor}}
         password: ${{ secrets.GITHUB_TOKEN }}
