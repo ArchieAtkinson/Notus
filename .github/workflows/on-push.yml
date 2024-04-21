@@ -31,7 +31,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
         id: last_successful_commit_push
         with:
-          main-branch-name: ${{ github.ref_name }} 
+          main-branch-name: trunk
 
       - name: Has dockerfile changed
         id: Has-dockerfile-changed
@@ -56,11 +56,11 @@ jobs:
           file: .devcontainer/Dockerfile
           tags: ${{needs.ImageName.outputs.branch-image}}
 
-      - name: Select New Dockerfile
+      - name: Select New Image
         if: steps.Has-dockerfile-changed.outputs.any_changed == 'true'
         run: echo "IMAGE_TO_USE=${{needs.ImageName.outputs.branch-image}}" >> $GITHUB_ENV
 
-      - name: Select New Dockerfile
+      - name: Select Trunk Image
         if: steps.Has-dockerfile-changed.outputs.any_changed != 'true'
         run: echo "IMAGE_TO_USE=${{needs.ImageName.outputs.trunk-image}}" >> $GITHUB_ENV
 
@@ -69,7 +69,7 @@ jobs:
     needs: [Docker, ImageName]
     runs-on: ubuntu-latest
     container:
-      image: ${{needs.ImageName.outputs.branch-image}}
+      image: ${{ IMAGE_TO_USE }}
       credentials:
         username: ${{github.actor}}
         password: ${{ secrets.GITHUB_TOKEN }}
