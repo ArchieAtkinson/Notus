@@ -58,7 +58,7 @@ jobs:
 
       - name: Select New Image
         if: steps.Has-dockerfile-changed.outputs.any_changed == 'true'
-        run: echo "IMAGE_TO_USE=${{needs.ImageName.outputs.branch-image}}"
+        run: echo "IMAGE_TO_USE=${{needs.ImageName.outputs.branch-image}} >> $GITHUB_ENV"
 
 
   Build:
