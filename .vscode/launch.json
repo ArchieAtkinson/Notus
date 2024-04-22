@@ -37,7 +37,7 @@
                     "ignoreFailures": true
                 },
             ],
-            "preLaunchTask": "Local Testing Build Native Sim"
+            "preLaunchTask": "Build Local Native Sim"
         }
     ]
 }
