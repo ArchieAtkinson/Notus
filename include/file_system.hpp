@@ -4,8 +4,6 @@
 
 #include <etl/unordered_map.h>
 
-#include <unordered_map>
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #pragma GCC diagnostic ignored "-Wshadow"
@@ -17,22 +15,8 @@ enum class FileSystemError
     invalid_arg = 1,
     already_mounted,
     fs_type_not_supported,
-};
-
-struct FileSystemError2
-{
-    enum
-    {
-        invalid_arg,
-        already_mounted,
-        fs_type_not_supported
-    };
-
-    explicit FileSystemError2(int error_) : error(error_)
-    {
-    }
-
-    int error;
+    fs_type_not_registered,
+    unknown,
 };
 
 namespace std
@@ -60,13 +44,20 @@ class FileSystem
   private:
     struct fs_mount_t *_mount;
 
-    
-    using error_pair = std::pair<int, FileSystemError>;
-
-    // NOLINTNEXTLINE(cert-err58-cpp)
-    inline const static etl::unordered_map mounting_error_conversion{
-        error_pair{-EINVAL, FileSystemError::invalid_arg},
-        error_pair{-EBUSY, FileSystemError::already_mounted},
-        error_pair{-ENOTSUP, FileSystemError::fs_type_not_supported},
-    }; 
+    static FileSystemError err_value_to_fs_err(int err)
+    {
+        switch (err)
+        {
+        case -ENOENT:
+            return FileSystemError::fs_type_not_registered;
+        case -EINVAL:
+            return FileSystemError::invalid_arg;
+        case -EBUSY:
+            return FileSystemError::already_mounted;
+        case -ENOTSUP:
+            return FileSystemError::fs_type_not_supported;
+        default:
+            return FileSystemError::unknown;
+        }
+    }
 };

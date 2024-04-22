@@ -1,61 +1,60 @@
 #include <zephyr/kernel.h>
 
-#include "errors.hpp"
 #include "file_system.hpp"
+
+#include "errors.hpp"
 #include "testing.hpp"
-#include "zephyr/fs/fs.h"
+
+#include <zephyr/device.h>
+#include <zephyr/fs/fs_sys.h>
+#include <zephyr/storage/flash_map.h>
+
+#define PARTITION_NODE DT_NODELABEL(lfs1)
+
+// NOLINTBEGIN(
+// cppcoreguidelines-avoid-non-const-global-variables,
+// cppcoreguidelines-interfaces-global-init,
+// cppcoreguidelines-avoid-non-const-global-variables
+// )
+FS_FSTAB_DECLARE_ENTRY(PARTITION_NODE);
+struct fs_mount_t mountpoint = FS_FSTAB_ENTRY(PARTITION_NODE);
+// NOLINTEND
 
 namespace
 {
 
 ZTEST(file_system, test_constructor_throw)
 {
-    bool exception_caught = false;
-    try
+    auto constructor_test = [](fs_mount_t *mount, FileSystemError err)
     {
-        FileSystem file_sys(nullptr);
-    }
-    catch (const MajorError &e)
-    {
-        zassert_equal(e.code(), FileSystemError::invalid_arg);
-        exception_caught = true;
-    }
-    catch (...)
-    {
-        zassert_unreachable();
-    }
-
-    exception_caught = false;
-    struct fs_mount_t mount
-    {
+        try
+        {
+            FileSystem file_sys(mount);
+            zassert_unreachable();
+        }
+        catch (const MajorError &e)
+        {
+            zassert_equal(e.code(), err);
+        }
+        catch (...)
+        {
+            zassert_unreachable();
+        }
     };
 
-    try
-    {
-        FileSystem file_sys(&mount);
-    }
-    catch (const MajorError &e)
-    {
-        zassert_equal(e.code(), FileSystemError::invalid_arg);
-        exception_caught = true;
-    }
-    catch (...)
-    {
-        zassert_unreachable();
-    }
+    constructor_test(nullptr, FileSystemError::invalid_arg);
 
-    // std::pair foo{1, 5};
+    struct fs_mount_t mount_no_mnt_point = mountpoint;
+    mount_no_mnt_point.mnt_point              = "";
+    constructor_test(&mount_no_mnt_point, FileSystemError::invalid_arg);
 
-    // etl::unordered_map mounting_error_conversion3({-EINVAL, FileSystemError::invalid_arg},
-    //                                               {-EBUSY, FileSystemError::already_mounted},
-    //                                               {-ENOTSUP, FileSystemError::fs_type_not_supported});
+    struct fs_mount_t mount_not_type = mountpoint;
+    mount_not_type.type              = 0;
+    constructor_test(&mount_not_type, FileSystemError::fs_type_not_registered);
 
-    using Pair = std::pair<int, std::string>;
-    Pair pair1 = {1, "one"};
-    Pair pair2 = {2, "two"};
-    Pair pair3 = {3, "three"};
-    // etl::unordered_map my_map2{ {1, "one"}, {2, "two"}, {3, "three"}};
-
+    struct fs_mount_t mount_null = mountpoint;
+    mount_null.fs             = nullptr;
+    constructor_test(&mount_not_type, FileSystemError::fs_type_not_registered);
 }
 
 ZTEST_SUITE(file_system, nullptr, nullptr, nullptr, nullptr, nullptr); // NOLINT
