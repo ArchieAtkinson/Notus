@@ -1,3 +1,4 @@
+#include <etl/string_view.h>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -9,6 +10,7 @@
 
 #include "errors.hpp"
 #include "testing.hpp"
+#include "zephyr/fs/fs.h"
 
 #include <zephyr/device.h>
 #include <zephyr/fs/fs_sys.h>
@@ -28,7 +30,7 @@ struct fs_mount_t mountpoint = FS_FSTAB_ENTRY(PARTITION_NODE);
 namespace
 {
 
-void convert_to_zeros(const std::string &filename)
+[[maybe_unused]] void convert_to_zeros(const std::string &filename)
 {
     std::ifstream inFile(filename, std::ios::binary | std::ios::ate);
     zassert_true(inFile.is_open());
@@ -45,15 +47,15 @@ void convert_to_zeros(const std::string &filename)
     outFile.close();
 }
 
-
-std::string get_flash_bin_path()
+[[maybe_unused]] std::string get_flash_bin_path()
 {
-    std::string current_file = std::source_location::current().file_name();
+    std::string           current_file = std::source_location::current().file_name();
     std::filesystem::path path(current_file);
-    path.remove_filename();
-    path += "flash.bin";
+
+    path = path.parent_path().parent_path() / "flash.bin";
+
     return path.string();
-} 
+}
 
 void teardown([[maybe_unused]] void *fixture)
 {
@@ -95,6 +97,51 @@ ZTEST(file_system, test_constructor_throw)
     struct fs_mount_t mount_null = mountpoint;
     mount_null.fs                = nullptr;
     constructor_test(&mount_not_type, FileSystemError::fs_type_not_registered);
+}
+
+ZTEST(file_system, test_constructor)
+{
+    ZFileSystem file_sys(&mountpoint);
+}
+
+ZTEST(file_system, test_file_open_create)
+{
+    auto open_test = [](const etl::string_view &file_name, FileSystemError err)
+    {
+        try
+        {
+            ZFileSystem file_sys(&mountpoint);
+            auto test = file_sys.file_open(file_name, ZFile::Flags::Create);
+            zassert_unreachable();
+        }
+        catch (const MajorError &e)
+        {
+            zassert_equal(e.code(), err);
+        }
+        catch (...)
+        {
+            zassert_unreachable();
+        }
+    };
+
+    open_test("", FileSystemError::path_is_directory);
+    open_test("dir/file", FileSystemError::file_not_at_path);
+
+    ZFileSystem file_sys(&mountpoint);
+    {
+        auto test = file_sys.file_open("test", ZFile::Flags::Create);
+    }
+
+    struct fs_file_t _file
+    {
+    };
+    fs_file_t_init(&_file);
+
+    int ret = fs_open(&_file, "/lfs1/test", 0);
+    zassert_equal(ret, 0);
+
+    ret = fs_close(&_file);
+    zassert_equal(ret, 0);
 }
 
 ZTEST_SUITE(file_system, nullptr, nullptr, nullptr, teardown, nullptr); // NOLINT
