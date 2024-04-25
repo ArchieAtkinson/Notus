@@ -56,7 +56,7 @@ jobs:
       - name: Get Image Tags
         id: image-tags
         run: |
-          echo "$(./scripts/list_image_tags.sh archieatkinson/notus ghcr.io ${{ secrets.GITHUB_TOKEN }})" >> "$GITHUB_OUTPUT"
+          echo "$(./scripts/list_image_tags.sh ghcr.io archieatkinson/notus ${{ secrets.GITHUB_TOKEN }})" >> "$GITHUB_OUTPUT"
 
       - name: Select New Image
         id: image-to-use
