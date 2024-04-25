@@ -67,7 +67,7 @@ jobs:
             elif echo "${{ steps.image-tags.outputs.tags }}" | grep -q "${{ github.ref_name }}"; then
               echo "NAME=${{needs.ImageName.outputs.branch-image}}" >> "$GITHUB_OUTPUT"
             else
-              echo "NAME=ghcr.io/archieatkinson/trunk" >> "$GITHUB_OUTPUT"
+              echo "NAME=ghcr.io/archieatkinson/notus:trunk" >> "$GITHUB_OUTPUT"
             fi
 
 
