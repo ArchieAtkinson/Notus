@@ -21,4 +21,4 @@ if [ -z "$RESPONSE" ]; then
 fi
 
 # Output the list of tags for the image
-echo $RESPONSE | jq -r '.tags[]'
+echo $RESPONSE | jq -r '.tags | join(" ")'
