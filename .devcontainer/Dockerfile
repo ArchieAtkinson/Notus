@@ -28,7 +28,9 @@ RUN VERSION_DASHES=$(echo ${NRF_CLI_VERSION} | tr '.' '-') && \
 
 RUN apt-get install -y \
     cppcheck \
-    minicom
+    minicom \
+    curl \
+    jq
 
 
 ENV CLANGD_TIDY_DIR=/opt/clangd-tidy

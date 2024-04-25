@@ -56,7 +56,6 @@ jobs:
       - name: Get Image Tags
         id: image-tags
         run: |
-          sudo apt install -y curl jq
           echo "tags=$(./scripts/list_image_tags.sh ghcr.io archieatkinson/notus ${{ secrets.GITHUB_TOKEN }})" >> "$GITHUB_OUTPUT"
 
       - name: Select New Image
