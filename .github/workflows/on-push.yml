@@ -53,13 +53,7 @@ jobs:
           file: .devcontainer/Dockerfile
           tags: ${{needs.ImageName.outputs.branch-image}}
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{needs.ImageName.outputs.branch-image}}    
-
-      - run: echo "${{ steps.meta.outputs.tags }}"
+      - run: echo "$(./scripts/list_image_tags.sh archieatkinson/notus ghcr.io ${{ secrets.GITHUB_TOKEN }})"
 
       - name: Select New Image
         id: image-to-use
