@@ -30,6 +30,10 @@ struct fs_mount_t mountpoint = FS_FSTAB_ENTRY(PARTITION_NODE);
 namespace
 {
 
+auto ignore_create = [](ZFile::Flags flag) { return flag != ZFile::Flags::Create; }; // NOLINT
+auto enum_flags = magic_enum::enum_values<ZFile::Flags>();  // NOLINT
+auto non_create_flags = enum_flags | std::views::filter(ignore_create); // NOLINT
+
 [[maybe_unused]] void convert_to_zeros(const std::string &filename)
 {
     std::ifstream inFile(filename, std::ios::binary | std::ios::ate);
@@ -101,10 +105,17 @@ ZTEST(file_system, test_constructor_throw)
 
 ZTEST(file_system, test_constructor)
 {
-    ZFileSystem file_sys(&mountpoint);
+    try
+    {
+        ZFileSystem file_sys(&mountpoint);
+    }
+    catch (...)
+    {
+        zassert_unreachable();
+    }
 }
 
-ZTEST(file_system, test_file_open_create)
+ZTEST(file_system, test_file_open_create_throw)
 {
     auto open_test_fail = [](const etl::string_view &file_name, FileSystemError err)
     {
@@ -126,8 +137,12 @@ ZTEST(file_system, test_file_open_create)
 
     open_test_fail("", FileSystemError::path_is_directory);
     open_test_fail("dir/file", FileSystemError::file_not_at_path);
+}
 
-    ZFileSystem           file_sys(&mountpoint);
+ZTEST(file_system, test_file_open_create)
+{
+    ZFileSystem file_sys(&mountpoint);
+
     [[maybe_unused]] auto unused = file_sys.open_file("test", ZFile::Flags::Create);
     struct fs_file_t      _file
     {
@@ -136,9 +151,9 @@ ZTEST(file_system, test_file_open_create)
     zassert_not_ok(fs_open(&_file, "/lfs1/test", 0));
 }
 
-ZTEST(file_system, test_file_open_other)
+ZTEST(file_system, test_file_open_other_throw)
 {
-    auto open_test_fail = [](const etl::string_view &file_name, FileSystemError err, ZFile::Flags flag)
+    auto open_test_fail = [](const etl::string_view &file_name, FileSystemError err, ZFile::Flags flag) 
     {
         try
         {
@@ -156,28 +171,28 @@ ZTEST(file_system, test_file_open_other)
         }
     };
 
-    auto non_create_flags = magic_enum::enum_values<ZFile::Flags>() |
-                            std::views::filter([](ZFile::Flags flag) { return flag != ZFile::Flags::Create; });
-
-    for (auto &&flag : non_create_flags)
+    for (const auto& flag : non_create_flags)
     {
         open_test_fail("", FileSystemError::path_is_directory, flag);
         open_test_fail("dir/file", FileSystemError::file_not_at_path, flag);
         open_test_fail("test", FileSystemError::file_not_at_path, flag);
     }
+}
 
+ZTEST(file_system, test_file_open_other)
+{
     ZFileSystem file_sys(&mountpoint);
     {
         [[maybe_unused]] auto unused = file_sys.open_file("test", ZFile::Flags::Create);
     }
 
-    for (auto &&flag : non_create_flags)
+    for (const auto& flag : non_create_flags)
     {
         [[maybe_unused]] auto unused2 = file_sys.open_file("test", flag);
     }
 }
 
-ZTEST(file_system, test_file_open_create_with_other)
+ZTEST(file_system, test_file_open_create_with_other_throw)
 {
     auto open_test_fail = [](const etl::string_view &file_name, FileSystemError err, ZFile::Flags flag)
     {
@@ -197,25 +212,25 @@ ZTEST(file_system, test_file_open_create_with_other)
         }
     };
 
-    auto ignore_create    = [](ZFile::Flags flag) { return flag != ZFile::Flags::Create; };
-    auto non_create_flags = magic_enum::enum_values<ZFile::Flags>() | std::views::filter(ignore_create);
-
-    for (auto flag : non_create_flags)
+    for (const auto& flag : non_create_flags)
     {
         open_test_fail("", FileSystemError::path_is_directory, ZFile::Flags::Create | flag);
         open_test_fail("dir/file", FileSystemError::file_not_at_path, ZFile::Flags::Create | flag);
     }
+}
 
+ZTEST(file_system, test_file_open_create_with_other)
+{
     ZFileSystem file_sys(&mountpoint);
 
-    for (auto &&flag : non_create_flags)
+    for (const auto& flag : non_create_flags)
     {
         auto                  filename = magic_enum::enum_name<ZFile::Flags>(flag);
         etl::string_view      filename_view(filename.begin(), filename.size());
         [[maybe_unused]] auto unused = file_sys.open_file(filename_view, ZFile::Flags::Create | flag);
-        
     }
 }
+
 
 ZTEST(file_system, test_file_close)
 {

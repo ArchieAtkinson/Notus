@@ -50,7 +50,7 @@ class ZFile
     friend Flags operator&(const Flags &lhs, const Flags &rhs);
     friend Flags operator|(const Flags& lhs, const Flags& rhs);
 
-    ZFile(const etl::string_view& file_name, Flags flags, const etl::string_view& mount);
+    ZFile(const etl::string_view& file_name, const Flags flags, const etl::string_view& mount);
     ~ZFile();
 
     ZFile(const ZFile &other)            = delete;
@@ -69,7 +69,7 @@ class ZFileSystem
 {
   public:
     explicit ZFileSystem(struct fs_mount_t *mount);
-    [[nodiscard]] ZFile open_file(const etl::string_view& file_name, ZFile::Flags flags);
+    [[nodiscard]] ZFile open_file(const etl::string_view& file_name, const ZFile::Flags flags);
 
     ~ZFileSystem();
 

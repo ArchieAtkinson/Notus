@@ -43,7 +43,7 @@ ZFileSystem::ZFileSystem(struct fs_mount_t *mount) : _mount{mount}
     }
 }
 
-ZFile ZFileSystem::open_file(const etl::string_view& file_name, ZFile::Flags flags)
+ZFile ZFileSystem::open_file(const etl::string_view& file_name, const ZFile::Flags flags)
 {
     return {file_name, flags, _mount->mnt_point};
 }
@@ -54,7 +54,7 @@ ZFileSystem::~ZFileSystem()
     fs_unmount(_mount);
 }
 
-ZFile::ZFile(const etl::string_view& file_name, Flags flags, const etl::string_view &mount)
+ZFile::ZFile(const etl::string_view& file_name, const Flags flags, const etl::string_view &mount)
 {
     fs_file_t_init(&_file);
 
