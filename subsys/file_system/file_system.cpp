@@ -16,7 +16,10 @@ ZFile::Flags operator|(const ZFile::Flags& lhs, const ZFile::Flags& rhs) {
     return static_cast<ZFile::Flags>(static_cast<T>(lhs) | static_cast<T>(rhs));
 }
 
-
+template<typename E>
+constexpr bool has_flag(E value, E flag) noexcept {
+    return ((value & flag) == flag);
+}
 
 ZFileSystem::ZFileSystem(struct fs_mount_t *mount) : _mount{mount}
 {
@@ -54,7 +57,7 @@ ZFileSystem::~ZFileSystem()
     fs_unmount(_mount);
 }
 
-ZFile::ZFile(const etl::string_view& file_name, const Flags flags, const etl::string_view &mount)
+ZFile::ZFile(const etl::string_view& file_name, const Flags flags, const etl::string_view &mount) : _flags{flags}
 {
     fs_file_t_init(&_file);
 
@@ -84,6 +87,70 @@ ZFile::ZFile(const etl::string_view& file_name, const Flags flags, const etl::st
             }
         };
         throw MajorError(err_value_to_fs_err(ret), ret);
+    }
+}
+
+void ZFile::write(std::span<uint8_t> data)
+{
+    if (!has_flag(_flags, ZFile::Flags::Write))
+    {
+        throw MajorError(FileSystemError::file_not_open_for_write, 0);
+    }
+
+    if (data.data() == nullptr)
+    {
+        throw MajorError(FileSystemError::bad_data, 0);
+    }
+    
+    int ret = fs_write(&_file, data.data(), data.size_bytes());
+    if (ret < 0) {
+        auto err_value_to_fs_err = [](int err)
+        {
+
+            switch (err)
+            {
+            case -EBADF:
+                return FileSystemError::fs_not_available;
+            case -ENOTSUP:
+                return FileSystemError::operation_not_supported;
+            default:
+                return FileSystemError::unknown;
+            }
+        };
+        throw MajorError(err_value_to_fs_err(ret), ret);
+    }
+
+    if (ret != static_cast<int>(data.size_bytes())) {
+        throw MajorError(FileSystemError::uncompleted_write, ret);
+    }
+}
+
+void ZFile::read(std::span<uint8_t> data)
+{
+    if (!has_flag(_flags, ZFile::Flags::Read))
+    {
+        throw MajorError(FileSystemError::file_not_open_for_read, 0);
+    }
+
+    int ret = fs_read(&_file, data.data(), data.size_bytes());
+    if (ret < 0) {
+        auto err_value_to_fs_err = [](int err)
+        {
+            switch (err)
+            {
+            case -EBADF:
+                return FileSystemError::fs_not_available;
+            case -ENOTSUP:
+                return FileSystemError::operation_not_supported;
+            default:
+                return FileSystemError::unknown;
+            }
+        };
+        throw MajorError(err_value_to_fs_err(ret), ret);
+    }
+
+    if (ret != static_cast<int>(data.size_bytes())) {
+        throw MajorError(FileSystemError::uncompleted_read, ret);
     }
 }
 

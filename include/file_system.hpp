@@ -1,10 +1,9 @@
 #pragma once
-
-#include <etl/string_view.h>
-#include <etl/vector.h>
 #include <system_error>
 #include <type_traits>
+#include <span>
 
+#include <etl/string_view.h>
 #include <etl/unordered_map.h>
 
 #pragma GCC diagnostic push
@@ -23,6 +22,13 @@ enum class FileSystemError
     busy,
     path_is_directory,
     file_not_at_path,
+    bad_data,
+    uncompleted_write,
+    uncompleted_read,
+    fs_not_available,
+    operation_not_supported,
+    file_not_open_for_write,
+    file_not_open_for_read,
     unknown,
 };
 
@@ -35,9 +41,12 @@ template <> struct is_error_code_enum<FileSystemError> : true_type
 
 std::error_code make_error_code(FileSystemError);
 
+class ZFileSystem;
+
 class ZFile
 {
   public:
+    friend class ZFileSystem;
     enum class Flags
     {
         Check          = 0,
@@ -50,26 +59,31 @@ class ZFile
     friend Flags operator&(const Flags &lhs, const Flags &rhs);
     friend Flags operator|(const Flags& lhs, const Flags& rhs);
 
-    ZFile(const etl::string_view& file_name, const Flags flags, const etl::string_view& mount);
+    
+    void write(std::span<uint8_t> data);
+    void read(std::span<uint8_t> data);
+    
     ~ZFile();
-
+    ZFile()                              = delete;
     ZFile(const ZFile &other)            = delete;
     ZFile(ZFile &&other)                 = delete;
     ZFile &operator=(const ZFile &other) = delete;
     ZFile &operator=(ZFile &&other)      = delete;
 
   private:
+    ZFile(const etl::string_view &file_name, const Flags flags, const etl::string_view &mount);
     struct fs_file_t _file
     {
     };
-
+    const Flags _flags;
 };
 
 class ZFileSystem
 {
   public:
     explicit ZFileSystem(struct fs_mount_t *mount);
-    [[nodiscard]] ZFile open_file(const etl::string_view& file_name, const ZFile::Flags flags);
+    [[nodiscard]] ZFile open_file(const etl::string_view &file_name, const ZFile::Flags flags);
+    bool check_file_exists();
 
     ~ZFileSystem();
 

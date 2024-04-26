@@ -1,9 +1,13 @@
 
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <ranges>
 #include <vector>
+#include <array>
+#include <numeric>
+
 
 #include <etl/string_view.h>
 #include <magic_enum.hpp>
@@ -15,6 +19,7 @@
 #include "errors.hpp"
 #include "file_system.hpp"
 #include "testing.hpp"
+#include "zephyr/fs/fs.h"
 
 #define PARTITION_NODE DT_NODELABEL(lfs1)
 
@@ -232,12 +237,115 @@ ZTEST(file_system, test_file_open_create_with_other)
 }
 
 
+ZTEST(file_system, test_file_write_throw)
+{
+    try
+    {
+        ZFileSystem file_sys(&mountpoint);
+        auto        file = file_sys.open_file("test", ZFile::Flags::Create);
+        std::array<uint8_t, 1> value = {1};
+        file.write(value);
+        zassert_unreachable();
+    }
+    catch (const MajorError &e)
+    {
+        zassert_equal(e.code(), FileSystemError::file_not_open_for_write);
+    }
+    catch (...)
+    {
+        zassert_unreachable();
+    }
+
+    try
+    {
+        ZFileSystem file_sys(&mountpoint);
+        auto        file = file_sys.open_file("test", ZFile::Flags::Create | ZFile::Flags::Write);
+        uint8_t    *ptr  = nullptr;
+        std::span<uint8_t> bad_pointer{ptr, 1};
+        file.write(bad_pointer);
+        zassert_unreachable();
+    }
+    catch (const MajorError &e)
+    {
+        zassert_equal(e.code(), FileSystemError::bad_data);
+    }
+    catch (...)
+    {
+        zassert_unreachable();
+    }
+}
+
+ZTEST(file_system, test_file_write)
+{
+    constexpr std::size_t data_size = 10;
+    std::array<uint8_t, data_size> data{};
+    std::iota(data.begin(), data.end(), 0);
+
+    ZFileSystem file_sys(&mountpoint);
+    {
+        auto file = file_sys.open_file("test", ZFile::Flags::Create | ZFile::Flags::Write);
+        file.write(data);
+    }
+
+    struct fs_file_t file_handler{};
+    fs_file_t_init(&file_handler);
+    zassert_ok(fs_open(&file_handler, "/lfs1/test", FS_O_READ));
+
+    std::array<uint8_t, data_size> out{};
+    zassert_equal(fs_read(&file_handler, out.data(), out.size()),  static_cast<int>(out.size()));
+    zassert_equal(out, data);
+
+    zassert_ok(fs_close(&file_handler));
+}
+
+ZTEST(file_system, test_file_read_throw)
+{
+    try
+    {
+        ZFileSystem file_sys(&mountpoint);
+        auto        file = file_sys.open_file("test", ZFile::Flags::Create);
+
+        constexpr std::size_t data_size = 10;
+        std::array<uint8_t, data_size> data{};
+        file.read(data);
+
+        zassert_unreachable();
+    }
+    catch (const MajorError &e)
+    {
+        zassert_equal(e.code(), FileSystemError::file_not_open_for_read);
+    }
+    catch (...)
+    {
+        zassert_unreachable();
+    }
+}
+
+ZTEST(file_system, test_file_read)
+{
+    constexpr std::size_t data_size = 10;
+    std::array<uint8_t, data_size> data{};
+    std::iota(data.begin(), data.end(), 0);
+
+    ZFileSystem file_sys(&mountpoint);
+    {
+        auto file = file_sys.open_file("test", ZFile::Flags::Create | ZFile::Flags::Write);
+        file.write(data);
+    }
+
+    auto file = file_sys.open_file("test", ZFile::Flags::Read);
+    std::array<uint8_t, data_size> out{};
+    file.read(out);
+
+    zassert_equal(out, data);
+}
+
+
 ZTEST(file_system, test_file_close)
 {
     ZFileSystem file_sys(&mountpoint);
     {
         [[maybe_unused]] auto unused = file_sys.open_file("test", ZFile::Flags::Create);
-        // Test is closed on destruction
     }
 
     struct fs_file_t _file
