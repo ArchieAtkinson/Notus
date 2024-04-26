@@ -47,6 +47,8 @@ class ZFile
         Create         = FS_O_CREATE,
         Append         = FS_O_APPEND,
     };
+    friend Flags operator&(const Flags &lhs, const Flags &rhs);
+    friend Flags operator|(const Flags& lhs, const Flags& rhs);
 
     ZFile(const etl::string_view& file_name, Flags flags, const etl::string_view& mount);
     ~ZFile();
@@ -67,7 +69,7 @@ class ZFileSystem
 {
   public:
     explicit ZFileSystem(struct fs_mount_t *mount);
-    ZFile file_open(const etl::string_view& file_name, ZFile::Flags flags);
+    [[nodiscard]] ZFile open_file(const etl::string_view& file_name, ZFile::Flags flags);
 
     ~ZFileSystem();
 

@@ -11,6 +11,13 @@ ZFile::Flags operator&(const ZFile::Flags& lhs, const ZFile::Flags& rhs) {
     return static_cast<ZFile::Flags>(static_cast<T>(lhs) & static_cast<T>(rhs));
 }
 
+ZFile::Flags operator|(const ZFile::Flags& lhs, const ZFile::Flags& rhs) {
+    using T = std::underlying_type_t<ZFile::Flags>;
+    return static_cast<ZFile::Flags>(static_cast<T>(lhs) | static_cast<T>(rhs));
+}
+
+
+
 ZFileSystem::ZFileSystem(struct fs_mount_t *mount) : _mount{mount}
 {
     int ret = fs_mount(mount);
@@ -36,7 +43,7 @@ ZFileSystem::ZFileSystem(struct fs_mount_t *mount) : _mount{mount}
     }
 }
 
-ZFile ZFileSystem::file_open(const etl::string_view& file_name, ZFile::Flags flags)
+ZFile ZFileSystem::open_file(const etl::string_view& file_name, ZFile::Flags flags)
 {
     return {file_name, flags, _mount->mnt_point};
 }

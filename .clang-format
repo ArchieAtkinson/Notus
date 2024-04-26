@@ -4,3 +4,6 @@ AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
 BreakBeforeBraces: Allman
 AllowShortFunctionsOnASingleLine: None
+BinPackParameters: false
+BinPackArguments: false 
+AlignAfterOpenBracket: AlwaysBreak

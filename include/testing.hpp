@@ -5,6 +5,12 @@
 
 
 // ztest_assert.h
+#undef zassert_ok
+#define zassert_ok(cond, ...) zassert(!(cond), #cond " is non-zero", ##__VA_ARGS__) // NOLINT
+
+#undef zassert_not_ok
+#define zassert_not_ok(cond, ...) zassert(!!(cond), #cond " is zero", ##__VA_ARGS__) // NOLINT
+
 #undef zassert_unreachable
 #define zassert_unreachable(...) zassert(0, "Reached unreachable code", ##__VA_ARGS__) // NOLINT
 

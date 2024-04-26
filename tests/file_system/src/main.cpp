@@ -1,20 +1,20 @@
-#include <etl/string_view.h>
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <ranges>
 #include <vector>
 
-#include <zephyr/kernel.h>
-
-#include "file_system.hpp"
-
-#include "errors.hpp"
-#include "testing.hpp"
-#include "zephyr/fs/fs.h"
+#include <etl/string_view.h>
+#include <magic_enum.hpp>
 
 #include <zephyr/device.h>
-#include <zephyr/fs/fs_sys.h>
+#include <zephyr/kernel.h>
 #include <zephyr/storage/flash_map.h>
+
+#include "errors.hpp"
+#include "file_system.hpp"
+#include "testing.hpp"
 
 #define PARTITION_NODE DT_NODELABEL(lfs1)
 
@@ -106,12 +106,12 @@ ZTEST(file_system, test_constructor)
 
 ZTEST(file_system, test_file_open_create)
 {
-    auto open_test = [](const etl::string_view &file_name, FileSystemError err)
+    auto open_test_fail = [](const etl::string_view &file_name, FileSystemError err)
     {
         try
         {
-            ZFileSystem file_sys(&mountpoint);
-            auto test = file_sys.file_open(file_name, ZFile::Flags::Create);
+            ZFileSystem           file_sys(&mountpoint);
+            [[maybe_unused]] auto unused = file_sys.open_file(file_name, ZFile::Flags::Create);
             zassert_unreachable();
         }
         catch (const MajorError &e)
@@ -124,24 +124,113 @@ ZTEST(file_system, test_file_open_create)
         }
     };
 
-    open_test("", FileSystemError::path_is_directory);
-    open_test("dir/file", FileSystemError::file_not_at_path);
+    open_test_fail("", FileSystemError::path_is_directory);
+    open_test_fail("dir/file", FileSystemError::file_not_at_path);
+
+    ZFileSystem           file_sys(&mountpoint);
+    [[maybe_unused]] auto unused = file_sys.open_file("test", ZFile::Flags::Create);
+    struct fs_file_t      _file
+    {
+    };
+    fs_file_t_init(&_file);
+    zassert_not_ok(fs_open(&_file, "/lfs1/test", 0));
+}
+
+ZTEST(file_system, test_file_open_other)
+{
+    auto open_test_fail = [](const etl::string_view &file_name, FileSystemError err, ZFile::Flags flag)
+    {
+        try
+        {
+            ZFileSystem           file_sys(&mountpoint);
+            [[maybe_unused]] auto unused = file_sys.open_file(file_name, flag);
+            zassert_unreachable();
+        }
+        catch (const MajorError &e)
+        {
+            zassert_equal(e.code(), err);
+        }
+        catch (...)
+        {
+            zassert_unreachable();
+        }
+    };
+
+    auto non_create_flags = magic_enum::enum_values<ZFile::Flags>() |
+                            std::views::filter([](ZFile::Flags flag) { return flag != ZFile::Flags::Create; });
+
+    for (auto &&flag : non_create_flags)
+    {
+        open_test_fail("", FileSystemError::path_is_directory, flag);
+        open_test_fail("dir/file", FileSystemError::file_not_at_path, flag);
+        open_test_fail("test", FileSystemError::file_not_at_path, flag);
+    }
 
     ZFileSystem file_sys(&mountpoint);
     {
-        auto test = file_sys.file_open("test", ZFile::Flags::Create);
+        [[maybe_unused]] auto unused = file_sys.open_file("test", ZFile::Flags::Create);
+    }
+
+    for (auto &&flag : non_create_flags)
+    {
+        [[maybe_unused]] auto unused2 = file_sys.open_file("test", flag);
+    }
+}
+
+ZTEST(file_system, test_file_open_create_with_other)
+{
+    auto open_test_fail = [](const etl::string_view &file_name, FileSystemError err, ZFile::Flags flag)
+    {
+        try
+        {
+            ZFileSystem           file_sys(&mountpoint);
+            [[maybe_unused]] auto unused = file_sys.open_file(file_name, flag);
+            zassert_unreachable();
+        }
+        catch (const MajorError &e)
+        {
+            zassert_equal(e.code(), err);
+        }
+        catch (...)
+        {
+            zassert_unreachable();
+        }
+    };
+
+    auto ignore_create    = [](ZFile::Flags flag) { return flag != ZFile::Flags::Create; };
+    auto non_create_flags = magic_enum::enum_values<ZFile::Flags>() | std::views::filter(ignore_create);
+
+    for (auto flag : non_create_flags)
+    {
+        open_test_fail("", FileSystemError::path_is_directory, ZFile::Flags::Create | flag);
+        open_test_fail("dir/file", FileSystemError::file_not_at_path, ZFile::Flags::Create | flag);
+    }
+
+    ZFileSystem file_sys(&mountpoint);
+
+    for (auto &&flag : non_create_flags)
+    {
+        auto                  filename = magic_enum::enum_name<ZFile::Flags>(flag);
+        etl::string_view      filename_view(filename.begin(), filename.size());
+        [[maybe_unused]] auto unused = file_sys.open_file(filename_view, ZFile::Flags::Create | flag);
+        
+    }
+}
+
+ZTEST(file_system, test_file_close)
+{
+    ZFileSystem file_sys(&mountpoint);
+    {
+        [[maybe_unused]] auto unused = file_sys.open_file("test", ZFile::Flags::Create);
+        // Test is closed on destruction
     }
 
     struct fs_file_t _file
     {
     };
     fs_file_t_init(&_file);
-
-    int ret = fs_open(&_file, "/lfs1/test", 0);
-    zassert_equal(ret, 0);
-
-    ret = fs_close(&_file);
-    zassert_equal(ret, 0);
+    zassert_ok(fs_open(&_file, "/lfs1/test", 0));
+    zassert_ok(fs_close(&_file));
 }
 
 ZTEST_SUITE(file_system, nullptr, nullptr, nullptr, teardown, nullptr); // NOLINT
