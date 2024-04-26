@@ -236,6 +236,37 @@ ZTEST(file_system, test_file_open_create_with_other)
     }
 }
 
+ZTEST(file_system, test_check_file_exists_throw)
+{
+    try
+    {
+        ZFileSystem           file_sys(&mountpoint);
+        [[maybe_unused]] auto unused = file_sys.check_file_exists("");
+        zassert_unreachable();
+    }
+    catch (const MajorError &e)
+    {
+        zassert_equal(e.code(), FileSystemError::path_is_directory);
+    }
+    catch (...)
+    {
+        zassert_unreachable();
+    }
+}
+
+ZTEST(file_system, test_check_file_exists)
+{
+    ZFileSystem file_sys(&mountpoint);
+    zassert_false(file_sys.check_file_exists("test"));
+
+    {
+    [[maybe_unused]] auto unused = file_sys.open_file("test", ZFile::Flags::Create);
+    }
+
+    zassert_true(file_sys.check_file_exists("test"));
+}
+
+
 
 ZTEST(file_system, test_file_write_throw)
 {

@@ -8,6 +8,7 @@
         "--compile-commands-dir=${env:NOTUS_ROOT}",
         "--malloc-trim",
         "--pch-storage=memory",
+        "--header-insertion=never"
     ],
     "clangd.fallbackFlags": [
         "--compile-commands-dir=build"
