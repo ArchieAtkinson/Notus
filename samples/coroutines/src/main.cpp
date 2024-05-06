@@ -4,22 +4,23 @@
 #include "scheduler.hpp"
 #include "task.hpp"
 
-Task foo(Scheduler& scheduler)
+Task foo()
 {
     std::cout << "Hello" << '\n';
 
-    co_await sleep_awaiter(1000, scheduler);
+    co_await SleepTime(1000);
+
     std::cout << "Goodbye" << '\n';
 
     co_return;
 }
 
 
-Task foo2(Scheduler& scheduler)
+Task foo2()
 {
     std::cout << "Hello 2" << '\n';
 
-    co_await sleep_awaiter(1000, scheduler);
+    co_await SleepTime(1000);
 
     std::cout << "Goodbye 2" << '\n';
 
@@ -31,8 +32,8 @@ Task foo2(Scheduler& scheduler)
 int main()
 {
     Scheduler scheduler;
-    auto      task1 = foo(scheduler);
-    auto      task2 = foo2(scheduler);
+    auto      task1 = foo();
+    auto      task2 = foo2();
     scheduler.add_routine(&task1);
     scheduler.add_routine(&task2);
 
