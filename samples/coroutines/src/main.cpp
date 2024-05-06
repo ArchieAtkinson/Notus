@@ -4,7 +4,7 @@
 #include "scheduler.hpp"
 #include "task.hpp"
 
-Task foo()
+Task<void> foo()
 {
     std::cout << "Hello" << '\n';
 
@@ -16,7 +16,7 @@ Task foo()
 }
 
 
-Task foo2()
+Task<void> foo2()
 {
     std::cout << "Hello 2" << '\n';
 
@@ -26,8 +26,6 @@ Task foo2()
 
     co_return;
 }
-
-
 
 int main()
 {

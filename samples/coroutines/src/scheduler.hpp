@@ -11,7 +11,7 @@
 class Scheduler
 {
   public:
-    void add_routine(Task *task)
+    void add_routine(Task<void> *task)
     {
         routines.emplace_back(task);
     }
@@ -38,5 +38,5 @@ class Scheduler
 
   private:
     
-    std::vector<Task*> routines{};
+    std::vector<Task<void> *> routines{};
 };

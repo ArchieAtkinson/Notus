@@ -38,4 +38,5 @@
         "zassert",
         "ZTEST"
     ],
+    "editor.detectIndentation": false,
 }

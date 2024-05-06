@@ -12,7 +12,6 @@ set(SOURCES
     src/scheduler.hpp
     src/scheduler.cpp
     src/task.hpp
-    src/task.cpp
 )
 
 set_property(SOURCE ${SOURCES} APPEND PROPERTY COMPILE_OPTIONS "-fcoroutines")
