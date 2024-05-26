@@ -25,6 +25,7 @@ class Scheduler
                 k_sleep(K_TICKS(1));
                 if (task->_handle.promise().runable_time < UpTime::now())
                 {
+
                     if (!task->_handle.done())
                     {
                         task->_handle.resume();
