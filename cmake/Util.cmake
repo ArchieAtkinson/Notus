@@ -52,7 +52,7 @@ function(RunClangTidy target)
     COMMAND $ENV{NOTUS_ROOT}/scripts/prepare_cc_for_clang_tidy.py 
         ${CMAKE_BINARY_DIR}/compile_commands.json
         ${CMAKE_BINARY_DIR}/clang-tidy-cc/compile_commands.json
-    COMMAND run-clang-tidy-17
+    COMMAND run-clang-tidy-$ENV{LLVM_VERSION}
         -p ${CMAKE_BINARY_DIR}/clang-tidy-cc
         -quiet
     BYPRODUCTS ${CMAKE_BINARY_DIR}/clang-tidy-cc/compile_commands.json

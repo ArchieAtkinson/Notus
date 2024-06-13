@@ -10,9 +10,9 @@ This script is to remove entries and flags from a compile_commands.json that are
 
 flags_to_remove = ["-fno-freestanding", "-fno-reorder-functions", "-fno-defer-pop", "-Wno-volatile", "--param=min-pagesize=0"]
 
-def filter_entries_in(file_content, path_to_remove):
+def filter_entries_in(file_content, path_to_keep):
     data = json.loads(file_content)
-    filtered_data = [entry for entry in data if path_to_remove in entry['file']]
+    filtered_data = [entry for entry in data if path_to_keep in entry['file']]
     return json.dumps(filtered_data, indent=2)
 
 def filter_entries_out(file_content, path_to_remove):
@@ -31,7 +31,7 @@ def main(input_file, output_file):
         file_content = f.read()
 
         file_content = remove_flags(file_content, flags_to_remove)
-        file_content = filter_entries_in(file_content, "applications")
+        file_content = filter_entries_in(file_content, "notus")
         file_content = filter_entries_out(file_content, "generated")
 
         with open(output_file, 'w') as f:
