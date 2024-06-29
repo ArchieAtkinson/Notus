@@ -16,6 +16,15 @@ function(ProjectSetup snippets)
     set(SNIPPET_ROOT ${SNIPPET_ROOT} PARENT_SCOPE)
     
     set(SNIPPET ${snippets} PARENT_SCOPE)
+
+    set(ZEPHYR_SCA_VARIANT codechecker PARENT_SCOPE)
+    set(CODECHECKER_ANALYZE_OPTS
+        -i $ENV{NOTUS_ROOT}/codechecker_skip
+        --analyzers=clang-tidy
+        --tidyargs=${NOTUS_ROOT}/tidy_analyzer.cfg
+        --analyzer-config=clang-tidy:take-config-from-directory=true
+        PARENT_SCOPE
+    )
 endfunction()
 
 function(SetupTarget target_name)
@@ -32,6 +41,14 @@ function(SetupTarget target_name)
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json $ENV{NOTUS_ROOT}/compile_commands.json    COMMENT "Moving compile_commands.json to $ENV{APPPLICATION_ROOT}"
         VERBATIM
     )
+
+    add_custom_target(ccClean ALL
+    COMMAND $ENV{NOTUS_ROOT}/scripts/remove_fno-freestanding.py
+        ${CMAKE_BINARY_DIR}/compile_commands.json
+    # BYPRODUCTS ${CMAKE_BINARY_DIR}/compile_commands.json
+    )
+    
+    add_dependencies(codechecker ccClean)
 endfunction()
 
 function(RunClangdTidy target sources)

@@ -61,6 +61,9 @@ ZTEST(button, test_on_press_and_debounce)
         }
     };
 
+    int i = 0;
+    printf("i%d", i);
+
     constexpr int estimate_debounce_time_ms = 5;
     debounce_sim(estimate_debounce_time_ms);
 

@@ -16,6 +16,7 @@ Checks: "*,
         -hicpp-signed-bitwise,
         -hicpp-exception-baseclass,
         -misc-include-cleaner,
+        -hicpp-no-assembler,
 "
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''

@@ -27,6 +27,7 @@ def remove_flags(file_content, flags):
 
 
 def main(input_file, output_file):
+    file_content = None
     with open(input_file, 'r') as f:
         file_content = f.read()
 
@@ -34,8 +35,8 @@ def main(input_file, output_file):
         file_content = filter_entries_in(file_content, "applications")
         file_content = filter_entries_out(file_content, "generated")
 
-        with open(output_file, 'w') as f:
-            f.write(file_content)
+    with open(output_file, 'w') as f:
+        f.write(file_content)
 
 
 if __name__ == "__main__":
