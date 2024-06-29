@@ -30,6 +30,7 @@ RUN apt-get install -y \
     cppcheck \
     minicom
 
+RUN pip install codechecker
 
 ENV CLANGD_TIDY_DIR=/opt/clangd-tidy
 RUN sudo git clone -b pretty-output https://github.com/ArchieAtkinson/clangd-tidy.git ${CLANGD_TIDY_DIR}
