@@ -25,6 +25,9 @@ manifest:
     - name: expected
       remote: TartanLlama
       revision: v1.1.0
+    - name: optional
+      remote: TartanLlama
+      revision: v1.1.0
     - name: etl
       remote: embedded-template-library 
       revision: 20.38.10
