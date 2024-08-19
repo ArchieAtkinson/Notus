@@ -1,0 +1,12 @@
+
+menuconfig MODULE1
+	bool "module1"
+	default y
+
+if MODULE1
+
+endif # MODULE1
+
+module = MODULE1
+module-str = Module 1
+source "subsys/logging/Kconfig.template.log_config"
