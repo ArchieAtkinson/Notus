@@ -17,5 +17,7 @@ target_compile_options(app PUBLIC -Wno-missing-field-initializers)
 
 add_subdirectory(src/module1)
 
+target_include_directories(app PRIVATE include)
+
 
 SetupTarget(app)
