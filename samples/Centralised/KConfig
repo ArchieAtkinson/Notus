@@ -1,0 +1,11 @@
+rsource "src/module1/Kconfig"
+
+menu "Zephyr Kernel"
+
+source "Kconfig.zephyr"
+
+endmenu
+
+module = APPLICATION
+module-str = Application
+source "subsys/logging/Kconfig.template.log_config"
