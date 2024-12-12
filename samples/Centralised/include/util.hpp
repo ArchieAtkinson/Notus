@@ -5,6 +5,8 @@
 #include "zephyr/kernel.h"
 #include <zephyr/zbus/zbus.h>
 
+constexpr std::size_t std_message_queue_size = 10;
+
 template <typename TMessageVariant>
 int send_message(const zbus_channel *channel, auto message, k_timeout_t timeout)
 {

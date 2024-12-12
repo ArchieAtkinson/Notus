@@ -18,6 +18,7 @@ Checks: "*,
         -misc-include-cleaner,
         -cppcoreguidelines-pro-type-vararg,
         -hicpp-vararg,
+        -readability-magic-numbers, 
 "
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''

@@ -1,7 +1,7 @@
 #pragma once
 
+#include <cstdint>
 #include <variant>
-#include <string>
 
 
 #include <zephyr/kernel.h>
@@ -27,17 +27,21 @@ struct module1_in_msg_b
 };
 
 using module1_in_msgs = std::variant<module1_in_msg_a, module1_in_msg_b>;
-using MessageExchangeIn = MessageExchange<module1_in_msgs, 10>;
-MessageExchangeIn EXToModule(&module1_in_chan);
+
+// using MessageExchangeIn = MessageExchange<module1_in_msgs, std_message_queue_size>;
+// MessageExchangeIn ToModule1(&module1_in_chan);
 
 struct module1_out_msg_a
 {
-    char value[100];
+    std::array<char, 100> value; // NOLINT(cppcoreguidelines-avoid-magic-numbers)
 };
 
 using module1_out_msgs = std::variant<module1_out_msg_a>;
-// using MessageExchangeOut = MessageExchange<module1_out_msgs, 10>;
-// extern MessageExchangeOut EXToCentral(&module1_out_chan);
 
-}
+// using MessageExchangeOut = MessageExchange<module1_out_msgs, std_message_queue_size>;
+// extern MessageExchangeOut ToCentral(&module1_out_chan);
+
+} // namespace module1
+
+
 

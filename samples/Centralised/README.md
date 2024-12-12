@@ -1,1 +1,1 @@
-# Centralised
+# Centralized

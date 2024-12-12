@@ -5,7 +5,7 @@ include(Util)
 ProjectSetup("standard")
 
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
-project(centralised)
+project(centralized)
 
 set(SOURCES 
     src/main.cpp
@@ -18,6 +18,5 @@ target_compile_options(app PUBLIC -Wno-missing-field-initializers)
 add_subdirectory(src/module1)
 
 target_include_directories(app PRIVATE include)
-
 
 SetupTarget(app)

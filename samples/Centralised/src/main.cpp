@@ -8,7 +8,7 @@
 
 LOG_MODULE_REGISTER(APPLICATION, CONFIG_APPLICATION_LOG_LEVEL);
 
-K_MSGQ_DEFINE(in, sizeof(module1::module1_out_msgs), 10, 1);
+K_MSGQ_DEFINE(in, sizeof(module1::module1_out_msgs), 10, 1);   // NOLINT
 
 bool print_channel_data_iterator(const struct zbus_channel *chan,
                                  void                      *user_data)
@@ -19,6 +19,7 @@ bool print_channel_data_iterator(const struct zbus_channel *chan,
     LOG_INF("      Message size: %d", zbus_chan_msg_size(chan));
     LOG_INF("      Observers:");
 
+    
     ++(*count);
 
     struct zbus_channel_observation *observation = nullptr;
@@ -27,9 +28,9 @@ bool print_channel_data_iterator(const struct zbus_channel *chan,
                  limit = chan->data->observers_end_idx;
          i < limit; ++i)
     {
-        STRUCT_SECTION_GET(zbus_channel_observation, i, &observation);
+        STRUCT_SECTION_GET(zbus_channel_observation, i, &observation);  // NOLINT
 
-        __ASSERT(observation != nullptr, "observation must be not NULL");
+        __ASSERT(observation != nullptr, "observation must be not NULL");  // NOLINT
 
         LOG_INF("      - %s", observation->obs->name);
     }
@@ -37,7 +38,7 @@ bool print_channel_data_iterator(const struct zbus_channel *chan,
     struct zbus_observer_node *obs_nd = nullptr;
     struct zbus_observer_node *tmp    = nullptr;
 
-    SYS_SLIST_FOR_EACH_CONTAINER_SAFE(&chan->data->observers, obs_nd, tmp, node)
+    SYS_SLIST_FOR_EACH_CONTAINER_SAFE(&chan->data->observers, obs_nd, tmp, node) // NOLINT
     {
         LOG_INF("      - %s", obs_nd->obs->name);
     }
@@ -80,19 +81,19 @@ int main()
         LOG_INF("Send to out");
         module1::module1_in_msgs msg_out = module1::module1_in_msg_a{1};
         send_message<module1_in_msgs>(&module1_in_chan, msg_out, K_NO_WAIT);
-        k_msleep(500);
+        k_msleep(500); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
 
         LOG_INF("Getting in");
         module1::module1_out_msgs msg_in{};
         k_msgq_get(&in, &msg_in, K_FOREVER);
-        LOG_INF("%s", std::get<0>(msg_in).value);
-        k_msleep(500);
+        LOG_INF("%s", std::get<0>(msg_in).value.data());
+        k_msleep(500); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
     }
 
     k_sleep(K_FOREVER);
 }
 
-static void listener_callback(const struct zbus_channel *chan)
+static void listener_callback(const struct zbus_channel *chan)  // NOLINT
 {
     if (&module1_out_chan == chan)
     {
