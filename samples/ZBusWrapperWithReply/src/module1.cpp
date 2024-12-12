@@ -3,9 +3,9 @@
 
 #include <zephyr/sys/printk.h>
 #include <zephyr/zbus/zbus.h>
-#include <zephyr/logging/log.h>
 #include <zephyr/kernel.h>
 
+#include "logging.hpp"
 #include "messages.hpp"
 #include "pub_sub_with_msgq.hpp"
 
@@ -15,11 +15,11 @@ ZBUS_CHAN_DECLARE(simple_chan);
 
 namespace {
 
-K_MSGQ_DEFINE(simple_msgq, sizeof(SubscriberWithMsgQ<simple_msg, std::pair<int, std::string>>), 10, 1);
+K_MSGQ_DEFINE(simple_msgq, sizeof(SubscriberWithMsgQ<simple_msg, std::pair<int, std::string>>), 10, 1); // NOLINT
 
 void module1_task();
 
-K_THREAD_DEFINE(module1_task_id, CONFIG_MAIN_STACK_SIZE, module1_task, NULL, NULL, NULL, 7, 0, 0);
+K_THREAD_DEFINE(module1_task_id, CONFIG_MAIN_STACK_SIZE, module1_task, NULL, NULL, NULL, 7, 0, 0); // NOLINT
 
 void module1_task()
 {
@@ -32,10 +32,10 @@ void module1_task()
 
         LOG_INF("From queue -> %d", msg.get_message().a);
 
-        k_msleep(100);
+        k_msleep(100); // NOLINT
 
-        msg.set_reply(std::make_pair(6, std::string(k_thread_name_get(module1_task_id))));
-	}
+        msg.set_reply(std::make_pair(6, std::string(k_thread_name_get(module1_task_id)))); // NOLINT
+	} 
 }
 
 void module1_callback(const struct zbus_channel *chan)
@@ -49,6 +49,6 @@ void module1_callback(const struct zbus_channel *chan)
 
 }
 
-ZBUS_LISTENER_DEFINE(module1_obj, module1_callback);
+ZBUS_LISTENER_DEFINE(module1_obj, module1_callback); // NOLINT
 
-ZBUS_CHAN_ADD_OBS(simple_chan, module1_obj, 1);
+ZBUS_CHAN_ADD_OBS(simple_chan, module1_obj, 1); // NOLINT
