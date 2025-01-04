@@ -1,0 +1,1 @@
+target_sources(app PRIVATE module_a.cpp)

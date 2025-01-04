@@ -16,6 +16,8 @@ Checks: "*,
         -hicpp-signed-bitwise,
         -hicpp-exception-baseclass,
         -misc-include-cleaner,
+        -cppcoreguidelines-pro-type-vararg,
+        -hicpp-vararg,
 "
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''
