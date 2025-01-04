@@ -40,5 +40,5 @@
         "ZTEST"
     ],
 
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
 }

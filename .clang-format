@@ -4,6 +4,9 @@ AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
 BreakBeforeBraces: Allman
 AllowShortFunctionsOnASingleLine: None
+AllowAllParametersOfDeclarationOnNextLine: false
 BinPackParameters: false
 BinPackArguments: false 
-AlignAfterOpenBracket: AlwaysBreak
+AlignAfterOpenBracket: Align
+ContinuationIndentWidth: 4
+ColumnLimit: 120
