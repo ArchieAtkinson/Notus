@@ -1,11 +1,11 @@
 #pragma once
+#include <span>
 #include <system_error>
 #include <type_traits>
-#include <span>
 
-#include <tl/expected.hpp>
 #include <etl/string_view.h>
 #include <etl/unordered_map.h>
+#include <tl/expected.hpp>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
@@ -57,14 +57,13 @@ class ZFile
         Append         = FS_O_APPEND,
     };
     friend Flags operator&(const Flags &lhs, const Flags &rhs);
-    friend Flags operator|(const Flags& lhs, const Flags& rhs);
+    friend Flags operator|(const Flags &lhs, const Flags &rhs);
 
-    
     void write(std::span<uint8_t> data);
     void read(std::span<uint8_t> data);
-    
+
     ~ZFile();
-    
+
     ZFile()                              = delete;
     ZFile(const ZFile &other)            = delete;
     ZFile(ZFile &&other)                 = delete;
@@ -72,8 +71,10 @@ class ZFile
     ZFile &operator=(ZFile &&other)      = delete;
 
   private:
-    ZFile(const etl::string_view &file_name, const int flags, const etl::string_view &mount);
-    static tl::expected<fs_file_t, FileSystemError> open_file(const etl::string_view& file_name, const fs_mode_t flags, const etl::string_view &mount);
+    ZFile(const etl::string_view &file_name, const ZFile::Flags flags, const etl::string_view &mount);
+    static tl::expected<fs_file_t, FileSystemError> open_file(const etl::string_view &file_name,
+                                                              const fs_mode_t         flags,
+                                                              const etl::string_view &mount);
 
     struct fs_file_t _file
     {
@@ -85,7 +86,7 @@ class ZFileSystem
   public:
     explicit ZFileSystem(struct fs_mount_t *mount);
     [[nodiscard]] ZFile open_file(const etl::string_view &file_name, const ZFile::Flags flags);
-    bool check_file_exists(const etl::string_view& file_name);
+    bool                check_file_exists(const etl::string_view &file_name);
 
     ~ZFileSystem();
 

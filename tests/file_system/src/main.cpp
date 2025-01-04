@@ -74,9 +74,9 @@ void teardown([[maybe_unused]] void *fixture)
     zassert_true(ret == -EINVAL);
 }
 
-ZTEST(file_system, test_constructor_throw)
+ZTEST(file_system, test_constructor)
 {
-    auto constructor_test = [](fs_mount_t *mount, FileSystemError err)
+    auto constructor_fail = [](fs_mount_t *mount, FileSystemError err)
     {
         try
         {
@@ -93,31 +93,30 @@ ZTEST(file_system, test_constructor_throw)
         }
     };
 
-    constructor_test(nullptr, FileSystemError::invalid_arg);
+    constructor_fail(nullptr, FileSystemError::invalid_arg);
 
     struct fs_mount_t mount_no_mnt_point = mountpoint;
     mount_no_mnt_point.mnt_point         = "";
-    constructor_test(&mount_no_mnt_point, FileSystemError::invalid_arg);
+    constructor_fail(&mount_no_mnt_point, FileSystemError::invalid_arg);
 
     struct fs_mount_t mount_not_type = mountpoint;
     mount_not_type.type              = 0;
-    constructor_test(&mount_not_type, FileSystemError::fs_type_not_registered);
+    constructor_fail(&mount_not_type, FileSystemError::fs_type_not_registered);
 
     struct fs_mount_t mount_null = mountpoint;
     mount_null.fs                = nullptr;
-    constructor_test(&mount_not_type, FileSystemError::fs_type_not_registered);
-}
+    constructor_fail(&mount_not_type, FileSystemError::fs_type_not_registered);
 
-ZTEST(file_system, test_constructor)
-{
     try
     {
         ZFileSystem file_sys(&mountpoint);
+        constructor_fail(&mountpoint, FileSystemError::already_mounted);
     }
     catch (...)
     {
         zassert_unreachable();
     }
+    
 }
 
 ZTEST(file_system, test_file_open_create_throw)
