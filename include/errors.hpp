@@ -28,7 +28,7 @@ class MajorError
         std::array<char, 20> timestamp{};
         (void)std::snprintf(timestamp.data(), sizeof(timestamp), "[%02llu:%02llu:%02llu.%03u,%03u]", formatted_time.hours().count(), formatted_time.minutes().count(), formatted_time.seconds().count(), milliseconds, microseconds);
 
-        LOG_PRINTK("\e[1;45m%s <exception>: %s:%d:%d\e[0m\n", timestamp.data(), loc.file_name(), loc.line(), loc.column());
+        LOG_PRINTK("\e[1;45m%s <exception>: %s:%d:%d - %s:%s:%d\e[0m\n", timestamp.data(), loc.file_name(), loc.line(), loc.column(), _code.category().name(), _code.message().c_str(), _err_no);
     }
 
     [[nodiscard]] std::error_code code() const {return _code;}

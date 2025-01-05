@@ -78,7 +78,7 @@ jobs:
             else
               echo "NAME=ghcr.io/archieatkinson/${{needs.ImageName.outputs.repo}}:trunk" >> "$GITHUB_OUTPUT"
             fi
-
+            
   Build:
     needs: [Docker, ImageName]
     runs-on: ubuntu-latest

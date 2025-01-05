@@ -1,10 +1,11 @@
 #pragma once
-
+#include <span>
 #include <system_error>
+#include <type_traits>
 
+#include <etl/string_view.h>
 #include <etl/unordered_map.h>
-
-#include <unordered_map>
+#include <tl/expected.hpp>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
@@ -17,22 +18,19 @@ enum class FileSystemError
     invalid_arg = 1,
     already_mounted,
     fs_type_not_supported,
-};
-
-struct FileSystemError2
-{
-    enum
-    {
-        invalid_arg,
-        already_mounted,
-        fs_type_not_supported
-    };
-
-    explicit FileSystemError2(int error_) : error(error_)
-    {
-    }
-
-    int error;
+    fs_type_not_registered,
+    invalid_filename,
+    busy,
+    path_is_directory,
+    file_not_at_path,
+    bad_data,
+    uncompleted_write,
+    uncompleted_read,
+    fs_not_available,
+    operation_not_supported,
+    file_not_open_for_write,
+    file_not_open_for_read,
+    unknown,
 };
 
 namespace std
@@ -44,29 +42,59 @@ template <> struct is_error_code_enum<FileSystemError> : true_type
 
 std::error_code make_error_code(FileSystemError);
 
-class FileSystem
+class ZFileSystem;
+
+class ZFile
 {
   public:
-    explicit FileSystem(struct fs_mount_t *mount);
-    ~FileSystem();
+    friend class ZFileSystem;
+    enum class Flags : fs_mode_t
+    {
+        Read           = FS_O_READ,
+        Write          = FS_O_WRITE,
+        Read_and_Write = FS_O_RDWR,
+        Create         = FS_O_CREATE,
+        Append         = FS_O_APPEND,
+    };
+    friend Flags operator&(const Flags &lhs, const Flags &rhs);
+    friend Flags operator|(const Flags &lhs, const Flags &rhs);
 
-    FileSystem(const FileSystem &other) = delete;
+    void write(std::span<uint8_t> data);
+    void read(std::span<uint8_t> data);
 
-    FileSystem(FileSystem &&other)                 = delete;
-    FileSystem &operator=(const FileSystem &other) = delete;
+    ~ZFile();
 
-    FileSystem &operator=(FileSystem &&other) = delete;
+    ZFile()                              = delete;
+    ZFile(const ZFile &other)            = delete;
+    ZFile(ZFile &&other)                 = delete;
+    ZFile &operator=(const ZFile &other) = delete;
+    ZFile &operator=(ZFile &&other)      = delete;
+
+  private:
+    ZFile(const etl::string_view &file_name, const ZFile::Flags flags, const etl::string_view &mount);
+    static tl::expected<fs_file_t, FileSystemError> open_file(const etl::string_view &file_name,
+                                                              const fs_mode_t         flags,
+                                                              const etl::string_view &mount);
+
+    struct fs_file_t _file
+    {
+    };
+};
+
+class ZFileSystem
+{
+  public:
+    explicit ZFileSystem(struct fs_mount_t *mount);
+    [[nodiscard]] ZFile open_file(const etl::string_view &file_name, const ZFile::Flags flags);
+    bool                check_file_exists(const etl::string_view &file_name);
+
+    ~ZFileSystem();
+
+    ZFileSystem(const ZFileSystem &other)            = delete;
+    ZFileSystem(ZFileSystem &&other)                 = delete;
+    ZFileSystem &operator=(const ZFileSystem &other) = delete;
+    ZFileSystem &operator=(ZFileSystem &&other)      = delete;
 
   private:
     struct fs_mount_t *_mount;
-
-    
-    using error_pair = std::pair<int, FileSystemError>;
-
-    // NOLINTNEXTLINE(cert-err58-cpp)
-    inline const static etl::unordered_map mounting_error_conversion{
-        error_pair{-EINVAL, FileSystemError::invalid_arg},
-        error_pair{-EBUSY, FileSystemError::already_mounted},
-        error_pair{-ENOTSUP, FileSystemError::fs_type_not_supported},
-    }; 
 };
