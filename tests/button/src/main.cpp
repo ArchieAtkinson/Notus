@@ -36,7 +36,6 @@ ZTEST(button, test_constructor_throw)
     irq_pin.port->state->initialized  = true;
 }
 
-
 ZTEST(button, test_on_press_and_debounce)
 {
     static struct gpio_dt_spec irq_pin = GPIO_DT_SPEC_GET(DT_INST(0, test_button), button_gpios);
@@ -60,9 +59,6 @@ ZTEST(button, test_on_press_and_debounce)
             gpio_emul_input_set(irq_pin.port, irq_pin.pin, 0);
         }
     };
-
-    int i = 0;
-    printf("i%d", i);
 
     constexpr int estimate_debounce_time_ms = 5;
     debounce_sim(estimate_debounce_time_ms);

@@ -21,12 +21,8 @@ Checks: "*,
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''
 FormatStyle:     none
-UseColor: true
+UseColor: false
 
 CheckOptions:
-  - key: readability-identifier-length.IgnoredVariableNames
-    value: 'x|y|z'
-  - key: readability-identifier-length.IgnoredParameterNames
-    value: 'x|y|z'
   - key: readability-function-cognitive-complexity.IgnoreMacros
     value: true
