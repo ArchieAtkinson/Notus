@@ -13,7 +13,8 @@ RUN wget https://apt.llvm.org/llvm.sh && \
     sudo ./llvm.sh ${LLVM_VERSION} all
 
 RUN sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-${LLVM_VERSION} 10 && \
-    sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-${LLVM_VERSION} 10
+    sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-${LLVM_VERSION} 10 && \
+    sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-${LLVM_VERSION} 10
 
 
 RUN VERSION_DASHES=$(echo ${NRF_CLI_VERSION} | tr '.' '-') && \
@@ -32,6 +33,7 @@ RUN apt-get update -y && apt-get install -y \
     curl \
     jq
 
+RUN pip install codechecker
 
 ENV CLANGD_TIDY_DIR=/opt/clangd-tidy
 RUN sudo git clone -b pretty-output https://github.com/ArchieAtkinson/clangd-tidy.git ${CLANGD_TIDY_DIR}
