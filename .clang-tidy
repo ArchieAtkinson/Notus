@@ -17,6 +17,8 @@ Checks: "*,
         -hicpp-exception-baseclass,
         -misc-include-cleaner,
         -hicpp-no-assembler,
+        -cppcoreguidelines-pro-type-vararg,
+        -hicpp-vararg,
 "
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''

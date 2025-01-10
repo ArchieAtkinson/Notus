@@ -32,3 +32,7 @@ west build -b native_sim <dir with prj.conf in>
 
 Alternatively you can use VSCode Task. Just open any file in a directory or subdirectory that has a `prj.conf` like `tests/button/src/main.cpp` and run the `Run Local Native Sim` task, this will build and run currently entered project. 
 
+
+## Todo
+
+- Once [this](https://github.com/nrwl/nx-set-shas/pull/163) PR has been merge, use `fallback-sha: ${{github.event.workflow_run.head_sha}}` to ensure if the first push fails it can still detect dockerfile changes. 

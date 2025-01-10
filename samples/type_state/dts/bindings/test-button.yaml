@@ -1,0 +1,12 @@
+description: |
+    This binding provides resources required to build and run the
+    tests/button
+
+compatible: "test-button"
+
+properties:
+  button-gpios:
+    type: phandle-array
+    required: true
+    description: |
+      Identity of a GPIOs to be use to test the Button functionality

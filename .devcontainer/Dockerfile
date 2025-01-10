@@ -27,9 +27,11 @@ RUN VERSION_DASHES=$(echo ${NRF_CLI_VERSION} | tr '.' '-') && \
     dpkg-deb -b jlink_unpacked jlink_fixed.deb && \
     apt-get install -y ./jlink_fixed.deb
 
-RUN apt-get install -y \
+RUN apt-get update -y && apt-get install -y \
     cppcheck \
-    minicom
+    minicom \
+    curl \
+    jq
 
 RUN pip install codechecker
 
