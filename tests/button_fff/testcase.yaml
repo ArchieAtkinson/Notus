@@ -1,5 +1,5 @@
 tests:
-  app.button:
+  app.button_fff:
     platform_allow:
       - native_sim
     integration_platforms:
