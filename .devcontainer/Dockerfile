@@ -23,6 +23,7 @@ RUN VERSION_DASHES=$(echo ${NRF_CLI_VERSION} | tr '.' '-') && \
     sudo rm ./nrf-command-line-tools_${NRF_CLI_VERSION}_amd64.deb && \
     mkdir jlink_unpacked && \
     dpkg-deb -R /opt/nrf-command-line-tools/share/JLink*.deb jlink_unpacked && \
+    
     rm jlink_unpacked/DEBIAN/postinst && \
     dpkg-deb -b jlink_unpacked jlink_fixed.deb && \
     apt-get install -y ./jlink_fixed.deb
@@ -31,7 +32,10 @@ RUN apt-get update -y && apt-get install -y \
     cppcheck \
     minicom \
     curl \
-    jq
+    jq 
+
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /bin
 
 RUN pip install codechecker
 
