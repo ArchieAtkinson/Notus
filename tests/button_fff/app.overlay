@@ -1,0 +1,19 @@
+/ {
+	mgpio: mock_gpio {
+		compatible = "zephyr,mock-gpio";
+        gpio-controller;
+        #gpio-cells = <2>;
+        ngpios = <1>;
+    };
+};
+
+&mgpio
+{
+    status = "okay";
+    button {
+        gpio-hog;
+        gpios = <0 GPIO_ACTIVE_HIGH>;
+        input;
+    };
+
+};
