@@ -12,15 +12,8 @@
 
 DEFINE_FFF_GLOBALS; // NOLINT
 
-#define BUTTON_NODE DT_NODELABEL(mgpio)
-#define BUTTON_CHILD_NODE DT_CHILD(BUTTON_NODE, button)
-
-/* Alternative, more readable approach using DT macros */
-#define GPIO_SPEC                                                                                                      \
-    {                                                                                                                  \
-        .port = DEVICE_DT_GET(BUTTON_NODE), .pin = DT_GPIO_HOG_PIN_BY_IDX(BUTTON_CHILD_NODE, 0),                       \
-        .dt_flags = DT_GPIO_HOG_FLAGS_BY_IDX(BUTTON_CHILD_NODE, 0),                                                    \
-    }
+#define ZEPHYR_USER_NODE DT_PATH(zephyr_user)
+#define GPIO_SPEC GPIO_DT_SPEC_GET(ZEPHYR_USER_NODE, gpios);
 
 namespace
 {
@@ -50,14 +43,14 @@ ZTEST(button, test_constructor_throw)
     irq_pin.port->state->initialized = true;
 }
 
-
 ZTEST(button, test_on_press_and_debounce)
 {
     static struct gpio_dt_spec irq_pin = GPIO_SPEC;
 
-    static struct gpio_callback * callback_data = nullptr; // NOLINT
+    static struct gpio_callback *callback_data = nullptr; // NOLINT
 
-    auto handle_callback = [](const struct device *port, struct gpio_callback *callback, bool set) -> int {
+    auto handle_callback = [](const struct device *port, struct gpio_callback *callback, bool set) -> int
+    {
         ARG_UNUSED(port);
         if (set)
         {
@@ -67,7 +60,7 @@ ZTEST(button, test_on_press_and_debounce)
         {
             callback_data = nullptr;
         }
-        
+
         return 0;
     };
 
@@ -86,7 +79,6 @@ ZTEST(button, test_on_press_and_debounce)
 
     auto debounce_sim = [](int total_debounce_time_ms)
     {
-        
         for (int i = 0; i < total_debounce_time_ms; i++)
         {
             if (callback_data != nullptr)
