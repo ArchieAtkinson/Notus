@@ -21,8 +21,10 @@ get_last_success() {
             "/repos/${repo}/commits/${commit_sha}/check-runs" \
             --jq '.check_runs[] | {conclusion: .conclusion, name: .name}' 2>/dev/null)
 
+        echo $check_runs
+
         if [ -n "$check_runs" ]; then
-            failed_runs=$(echo "$check_runs" | jq -r 'select(.conclusion != "success" and .conclusion != null) | .name')
+            failed_runs=$(echo "$check_runs" | jq -r 'select(.conclusion != "success") | .name')
             if [ -z "$failed_runs" ]; then
                 echo "${commit_sha}"
                 exit 0
