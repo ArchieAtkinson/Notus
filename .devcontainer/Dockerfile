@@ -31,7 +31,11 @@ RUN apt-get update -y && apt-get install -y \
     cppcheck \
     minicom \
     curl \
-    jq
+    jq \
+    gh
+
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /bin
 
 RUN pip install codechecker
 
@@ -61,14 +65,10 @@ RUN mkdir -p $NOTUS_ROOT
 
 WORKDIR $NOTUS_ROOT
 
-COPY west.yml .
-COPY scripts/install.sh . 
+COPY west.yml justfile .
 
-RUN ./install.sh && \
-    rm install.sh && \
-    rm west.yml
+RUN just install_all
 
 USER root
-
 
 CMD ["/bin/bash"]
