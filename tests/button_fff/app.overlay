@@ -1,0 +1,13 @@
+/ {
+	mgpio: mock_gpio {
+		compatible = "zephyr,mock-gpio";
+        gpio-controller;
+        #gpio-cells = <2>;
+        ngpios = <1>;
+    };
+
+    zephyr,user {
+        gpios = <&mgpio 0 GPIO_ACTIVE_HIGH>;
+    };
+};
+
