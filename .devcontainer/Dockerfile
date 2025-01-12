@@ -32,7 +32,8 @@ RUN apt-get update -y && apt-get install -y \
     cppcheck \
     minicom \
     curl \
-    jq 
+    jq \
+    gh
 
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /bin

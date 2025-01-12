@@ -32,16 +32,18 @@ jobs:
         with:
             fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v4
+      - name: Get last successful commit
         id: last_successful_commit_push
-        with:
-          main-branch-name: ${{ github.ref_name }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "commit=$(./get_last_success.sh ${{ github.ref_name }} ${{ github.repository }})" >> $GITHUB_OUTPUT
 
       - name: Has dockerfile changed
         id: Has-dockerfile-changed
         uses: tj-actions/changed-files@v44
         with:
-          base_sha: ${{ steps.last_successful_commit_push.outputs.base }}
+          base_sha: ${{ steps.last_successful_commit_push.outputs.commit }}
           files: |
             .devcontainer/Dockerfile
             west.yml
@@ -114,4 +116,3 @@ jobs:
         with:
           name: twister_out
           path: /home/user/west-workspace/notus/twister-out/
-          

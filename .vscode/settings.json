@@ -41,4 +41,7 @@
     ],
 
     "editor.detectIndentation": false,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
 }
