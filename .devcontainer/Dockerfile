@@ -66,13 +66,10 @@ RUN mkdir -p $NOTUS_ROOT
 WORKDIR $NOTUS_ROOT
 
 COPY west.yml .
-COPY scripts/install.sh . 
+COPY justfile . 
 
-RUN ./install.sh && \
-    rm install.sh && \
-    rm west.yml
+RUN just install_all
 
 USER root
-
 
 CMD ["/bin/bash"]

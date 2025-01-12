@@ -18,7 +18,7 @@ build:
     rm -R build
 
 [no-exit-message]
-@ twister test_dir='tests':
+@ test test_dir='.':
     twister --clobber-output --coverage -T {{test_dir}} --platform native_sim
 
 
@@ -34,3 +34,35 @@ find_nearest_prj:
         current_dir=$(dirname "$current_dir")
     echo ""
     done
+
+[no-exit-message]
+list_image_tags registry image_name access_token:
+    #!/usr/bin/env sh
+    RESPONSE=$(curl -s -H "Authorization: Bearer $(echo {{access_token}} | base64)" https://{{registry}}/v2/{{image_name}}/tags/list)
+    if [ -z "$RESPONSE" ]; then
+        echo "Failed to retrieve tags from {{registry}}/{{image_name}}"
+        exit 1
+    fi
+    echo $RESPONSE | jq -r '.tags | join(" ")'
+
+[no-exit-message]
+install_module module_subdir +cmake_options="":
+    #!/usr/bin/env sh
+    cd $WEST_WORKSPACE/{{module_subdir}}
+    mkdir -p build
+    cmake {{cmake_options}} . -B build
+    cd build
+    sudo make install
+
+[no-exit-message]
+install_zephyr:
+    west init -l .
+    west update
+
+[no-exit-message]
+install_all:
+    install_zephyr
+    install_module magic_enum -DMAGIC_ENUM_OPT_BUILD_EXAMPLES=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF
+    install_module expected -DEXPECTED_BUILD_TESTS=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF
+    install_module optional -DOPTIONAL_BUILD_TESTS=OFF
+    install_module etl

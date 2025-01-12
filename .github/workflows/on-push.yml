@@ -45,7 +45,6 @@ jobs:
           files: |
             .devcontainer/Dockerfile
             west.yml
-            scripts/install.sh
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -66,7 +65,7 @@ jobs:
       - name: Get Image Tags
         id: image-tags
         run: |
-          echo "tags=$(./scripts/list_image_tags.sh ghcr.io archieatkinson/${{needs.ImageName.outputs.repo}} ${{ secrets.GITHUB_TOKEN }})" >> "$GITHUB_OUTPUT"
+          echo "tags=$(just list_image_tags.sh ghcr.io archieatkinson/${{needs.ImageName.outputs.repo}} ${{ secrets.GITHUB_TOKEN }})" >> "$GITHUB_OUTPUT"
 
       - run: echo "${{ steps.image-tags.outputs.tags }}"
 
@@ -105,12 +104,9 @@ jobs:
           echo "ZEPHYR_SDK_INSTALL_DIR=/opt/toolchains/zephyr-sdk-$ZSDK_VERSION" >> $GITHUB_ENV
           git config --global --add safe.directory "*"
           west update
-        
-      - name: Make west happy
-        run: west update
 
       - name: Build
-        run: twister -c --coverage -T . --platform native_sim
+        run: just test
 
       - name: Upload
         if: always()
