@@ -35,17 +35,18 @@ jobs:
       - uses: extractions/setup-just@v2
 
       - name: Get last successful commit
-        id: last_successful_commit_push
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "commit=$(./scripts/get_last_success.sh ${{ github.ref_name }} ${{ github.repository }})" >> $GITHUB_OUTPUT
+        id: last-successful-commit
+        uses: tylermilner/last-successful-commit-hash-action@v1
+        with:
+          workflow-id: on-push.yml
+          branch: ${{ github.ref_name }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Has dockerfile changed
         id: Has-dockerfile-changed
         uses: tj-actions/changed-files@v44
         with:
-          base_sha: ${{ steps.last_successful_commit_push.outputs.commit }}
+          base_sha: ${{ steps.last-successful-commit.outputs.commit-hash }}
           files: |
             .devcontainer/Dockerfile
             west.yml

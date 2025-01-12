@@ -66,8 +66,7 @@ RUN mkdir -p $NOTUS_ROOT
 
 WORKDIR $NOTUS_ROOT
 
-COPY west.yml .
-COPY justfile .
+COPY west.yml justfile .
 
 RUN just install_all
 

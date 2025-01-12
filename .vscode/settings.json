@@ -40,8 +40,12 @@
         "ZTEST"
     ],
 
-    "editor.detectIndentation": false,
+    
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
+    
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
 }
