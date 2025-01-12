@@ -61,8 +61,8 @@ install_zephyr:
 
 [no-exit-message]
 install_all:
-    install_zephyr
-    install_module magic_enum -DMAGIC_ENUM_OPT_BUILD_EXAMPLES=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF
-    install_module expected -DEXPECTED_BUILD_TESTS=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF
-    install_module optional -DOPTIONAL_BUILD_TESTS=OFF
-    install_module etl
+    just install_zephyr
+    just install_module magic_enum -DMAGIC_ENUM_OPT_BUILD_EXAMPLES=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF
+    just install_module expected -DEXPECTED_BUILD_TESTS=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF
+    just install_module optional -DOPTIONAL_BUILD_TESTS=OFF
+    just install_module etl
