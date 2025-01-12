@@ -37,7 +37,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "commit=$(./get_last_success.sh ${{ github.ref_name }} ${{ github.repository }})" >> $GITHUB_OUTPUT
+          echo "commit=$(./scripts/get_last_success.sh ${{ github.ref_name }} ${{ github.repository }})" >> $GITHUB_OUTPUT
 
       - name: Has dockerfile changed
         id: Has-dockerfile-changed
