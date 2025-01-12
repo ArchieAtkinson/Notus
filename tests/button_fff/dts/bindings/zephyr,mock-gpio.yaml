@@ -1,0 +1,10 @@
+
+description: Mock gpio device used as stub or mock for testing
+
+compatible: "zephyr,mock-gpio"
+
+include: [gpio-controller.yaml, base.yaml]
+
+gpio-cells:
+  - pin
+  - flags
