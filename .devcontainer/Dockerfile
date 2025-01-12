@@ -23,7 +23,6 @@ RUN VERSION_DASHES=$(echo ${NRF_CLI_VERSION} | tr '.' '-') && \
     sudo rm ./nrf-command-line-tools_${NRF_CLI_VERSION}_amd64.deb && \
     mkdir jlink_unpacked && \
     dpkg-deb -R /opt/nrf-command-line-tools/share/JLink*.deb jlink_unpacked && \
-    
     rm jlink_unpacked/DEBIAN/postinst && \
     dpkg-deb -b jlink_unpacked jlink_fixed.deb && \
     apt-get install -y ./jlink_fixed.deb
