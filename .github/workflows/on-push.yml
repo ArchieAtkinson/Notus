@@ -69,7 +69,7 @@ jobs:
       - name: Get Image Tags
         id: image-tags
         run: |
-          echo "tags=$(just list_image_tags.sh ghcr.io archieatkinson/${{needs.ImageName.outputs.repo}} ${{ secrets.GITHUB_TOKEN }})" >> "$GITHUB_OUTPUT"
+          echo "tags=$(just list_image_tags ghcr.io archieatkinson/${{needs.ImageName.outputs.repo}} ${{ secrets.GITHUB_TOKEN }})" >> "$GITHUB_OUTPUT"
 
       - run: echo "${{ steps.image-tags.outputs.tags }}"
 
