@@ -114,3 +114,4 @@ jobs:
         with:
           name: twister_out
           path: /home/user/west-workspace/notus/twister-out/
+          
