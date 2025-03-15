@@ -37,16 +37,28 @@ jobs:
       - name: Get last successful commit
         id: last-successful-commit
         uses: tylermilner/last-successful-commit-hash-action@v1
+        continue-on-error: true
         with:
           workflow-id: on-push.yml
           branch: ${{ github.ref_name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set final commit hash
+        id: final-commit
+        run: |
+          if [ "${{ steps.last-successful-commit.outcome }}" == "success" ]; then
+            COMMIT_HASH="${{ steps.last-successful-commit.outputs.commit-hash }}"
+          else
+            git fetch origin trunk
+            COMMIT_HASH=$(git merge-base origin/trunk ${{ github.ref_name }})
+          fi
+          echo "commit-hash=$COMMIT_HASH" >> $GITHUB_OUTPUT
+
       - name: Has dockerfile changed
         id: Has-dockerfile-changed
         uses: tj-actions/changed-files@v44
         with:
-          base_sha: ${{ steps.last-successful-commit.outputs.commit-hash }}
+          base_sha: ${{ steps.final-commit.outputs.commit-hash }}
           files: |
             .devcontainer/Dockerfile
             west.yml
