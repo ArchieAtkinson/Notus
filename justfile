@@ -66,3 +66,15 @@ install_all:
     just install_module expected -DEXPECTED_BUILD_TESTS=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF
     just install_module optional -DOPTIONAL_BUILD_TESTS=OFF
     just install_module etl
+
+
+[no-cd, no-exit-message]
+samples_build:
+    #!/usr/bin/env sh
+    for subdir in samples/*/; do
+        if [ -d "$subdir" ]; then
+            echo "Running in: $subdir"
+            (cd "$subdir" && eval just build)
+            echo "----------------------------------------"
+        fi
+    done

@@ -1,4 +1,4 @@
-FROM zephyrprojectrtos/ci:v0.26.6
+FROM zephyrprojectrtos/ci:v0.27.4
 
 ENV NRF_CLI_VERSION=10.24.0
 ENV LLVM_VERSION=17

@@ -1,0 +1,40 @@
+/*
+ * Overlay for BBC Micro:bit V2
+ * Removes LED matrix and adds led0 alias
+ */
+
+/ {
+    aliases {
+        /* Add led0 alias */
+        led0 = &single_led;
+        led1 = &other_led;
+    };
+
+    /* Disable the LED matrix by setting status to "disabled" */
+    led_matrix {
+        status = "disabled";
+    };
+
+    /* Create a custom LED using row and column pins */
+    leds {
+        compatible = "gpio-leds";
+        single_led: led_0 {
+            /* Using row 0 (gpio0 21) */
+            gpios = <&gpio0 21 GPIO_ACTIVE_HIGH>;
+            label = "Single LED";
+        };
+
+        other_led: led_1 {
+            gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
+            label = "Single LED 2";
+        };
+    };
+};
+
+/* 
+ * Disable the PWM that was used for the LED matrix 
+ * since we're repurposing the pins
+ */
+&pwm0 {
+    status = "disabled";
+};
