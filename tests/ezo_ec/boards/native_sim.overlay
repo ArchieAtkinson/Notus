@@ -1,0 +1,6 @@
+&i2c0 {
+    ezo_ec: ezoec@0 {
+        compatible = "atlas,ezo_ec";
+        reg = <0x0>;
+    };
+};

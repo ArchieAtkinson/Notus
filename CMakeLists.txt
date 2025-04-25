@@ -11,3 +11,4 @@ if(NOT CONFIG_RUST)
 endif()
 
 add_subdirectory(subsys)
+add_subdirectory(drivers)

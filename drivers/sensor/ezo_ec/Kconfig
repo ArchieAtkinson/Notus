@@ -1,0 +1,14 @@
+config EZO_EC
+    bool "EZO-EC Sensor"
+    default n
+    depends on I2C
+    help
+		Enable EZO-EC
+
+
+config EZO_EC_EMUL
+    bool "EZO-EC Emul" 
+    default n
+    depends on I2C_EMUL
+    help
+		Enable EZO-EC Emulator

@@ -35,6 +35,7 @@ endfunction()
 
 function(SetupTarget target_name)
     target_include_directories(${target_name} PUBLIC $ENV{NOTUS_ROOT}/includes)
+    target_include_directories(${target_name} PUBLIC $ENV{NOTUS_ROOT})
 
     target_compile_options(
         ${target_name}

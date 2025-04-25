@@ -1,0 +1,8 @@
+description: |
+    Sensor
+
+compatible: "atlas,ezo-ec"
+
+include: ["i2c-device.yaml", "sensor-device.yaml"]
+
+properties:
