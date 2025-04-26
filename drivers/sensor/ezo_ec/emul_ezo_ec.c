@@ -22,29 +22,30 @@ LOG_MODULE_REGISTER(EMUL_EZO_EC);
 struct emul_ezo_ec_data
 {
     struct i2c_emul emul;
-    uint8_t cur_reg;
-    uint8_t registers[EZO_EC_REG_AMOUNT];
+    char input[EZO_EC_BUFFER_SIZE];
+    char output[EZO_EC_BUFFER_SIZE];
 };
 
-uint8_t emul_ezo_ec_get_reg(const struct emul *emul, uint8_t address)
+void emul_ezo_ec_get_input(const struct emul *emul, char *buf, int len)
 {
     struct emul_ezo_ec_data *data = emul->data;
-
-    return data->registers[address];
+    memcpy(buf, data->input, len);
 }
 
-void emul_ezo_ec_set_reg(const struct emul *emul, uint8_t address, uint8_t reg_value)
+void emul_ezo_ec_set_output(const struct emul *emul, const char *buf, int len)
 {
     struct emul_ezo_ec_data *data = emul->data;
-
-    data->registers[address] = reg_value;
+    memset(data->output, 0, EZO_EC_BUFFER_SIZE);
+    data->output[0] = 1; // Hardcode response code for now;
+    memcpy(data->output+1, buf, len);
 }
 
-void emul_ezo_ec_reset_registers(const struct emul *emul)
+void emul_ezo_ec_reset_buffers(const struct emul *emul)
 {
     LOG_INF("Resetting Registers");
     struct emul_ezo_ec_data *data = emul->data;
-    memset(data->registers, 0, EZO_EC_REG_AMOUNT * sizeof(uint8_t));
+    memset(data->input,0, EZO_EC_BUFFER_SIZE);
+    memset(data->output, 0, EZO_EC_BUFFER_SIZE);
 }
 
 struct ezo_ec_config emul_ezo_ec_get_config(const struct emul *emul)
@@ -63,32 +64,25 @@ void emul_ezo_ec_set_config(const struct emul *emul, struct ezo_ec_config config
 
 static int emul_ezo_ec_write(struct emul_ezo_ec_data *data, uint8_t len, const uint8_t *buf)
 {
-    if (data->cur_reg + len > EZO_EC_REG_AMOUNT)
+    if (len > EZO_EC_BUFFER_SIZE)
     {
-        LOG_ERR("Writing to nonexistant address");
+        LOG_ERR("Write too large");
         return -ENXIO;
     }
-    for (int i = 0; i < len; i++)
-    {
-        data->registers[data->cur_reg] = buf[i];
-        data->cur_reg++;
-    }
+
+    memcpy(data->input, buf, len);
     return 0;
 }
 
 static int emul_ezo_ec_read(struct emul_ezo_ec_data *data, uint8_t len, uint8_t *buf)
 {
-    if (data->cur_reg + len > EZO_EC_REG_AMOUNT)
+    if (len > EZO_EC_BUFFER_SIZE)
     {
-        LOG_ERR("Reading from nonexistant address");
+        LOG_ERR("Read to large");
         return -ENXIO;
     }
 
-    for (int i = 0; i < len; i++)
-    {
-        buf[i] = data->registers[data->cur_reg];
-        data->cur_reg++;
-    }
+    memcpy(buf, data->output,  len);
 
     return 0;
 }
@@ -99,56 +93,70 @@ static int emul_ezo_ec_transfer(const struct emul *target, struct i2c_msg *msgs,
 
     i2c_dump_msgs(target->dev, msgs, num_msgs, addr);
 
-    switch (num_msgs)
+    if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_READ)
     {
-    case 1: {
-        if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_READ)
-        {
-            emul_ezo_ec_read(data, msgs[0].len, msgs[0].buf);
-        }
-        else if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_WRITE)
-        {
-            data->cur_reg = msgs[0].buf[0];
-            if (msgs[0].len != 1)
-            {
-                emul_ezo_ec_write(data, msgs[0].len - 1, &msgs[0].buf[1]);
-            }
-        }
-        else
-        {
-            LOG_ERR("Unknown transfer");
-            return -EIO;
-        }
-        break;
+        emul_ezo_ec_read(data, msgs[0].len, msgs[0].buf);
     }
-    case 2: {
-        if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_READ)
-        {
-            return -EIO;
-        }
-        if (msgs[0].len != 1U)
-        {
-            return -EIO;
-        }
-
-        data->cur_reg = msgs->buf[0];
-        // Handle Second Message
-
-        if ((msgs[1].flags & I2C_MSG_RW_MASK) == I2C_MSG_READ)
-        {
-            emul_ezo_ec_read(data, msgs[1].len, msgs[1].buf);
-        }
-        else if ((msgs[1].flags & I2C_MSG_RW_MASK) == I2C_MSG_WRITE)
-        {
-            emul_ezo_ec_write(data, msgs[1].len, msgs[1].buf);
-        }
-        break;
+    else if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_WRITE)
+    {
+        emul_ezo_ec_write(data, msgs[0].len, &msgs[0].buf[0]);
     }
-    default: {
-        LOG_ERR("Invalid number of messages");
+    else
+    {
+        LOG_ERR("Unknown transfer");
         return -EIO;
     }
-    }
+    
+    // switch (num_msgs)
+    // {
+    // case 1: {
+    //     if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_READ)
+    //     {
+    //         emul_ezo_ec_read(data, msgs[0].len, msgs[0].buf);
+    //     }
+    //     else if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_WRITE)
+    //     {
+    //         data->cur_reg = msgs[0].buf[0];
+    //         if (msgs[0].len != 1)
+    //         {
+    //             emul_ezo_ec_write(data, msgs[0].len - 1, &msgs[0].buf[1]);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         LOG_ERR("Unknown transfer");
+    //         return -EIO;
+    //     }
+    //     break;
+    // }
+    // case 2: {
+    //     if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_READ)
+    //     {
+    //         return -EIO;
+    //     }
+    //     if (msgs[0].len != 1U)
+    //     {
+    //         return -EIO;
+    //     }
+
+    //     data->cur_reg = msgs->buf[0];
+    //     // Handle Second Message
+
+    //     if ((msgs[1].flags & I2C_MSG_RW_MASK) == I2C_MSG_READ)
+    //     {
+    //         emul_ezo_ec_read(data, msgs[1].len, msgs[1].buf);
+    //     }
+    //     else if ((msgs[1].flags & I2C_MSG_RW_MASK) == I2C_MSG_WRITE)
+    //     {
+    //         emul_ezo_ec_write(data, msgs[1].len, msgs[1].buf);
+    //     }
+    //     break;
+    // }
+    // default: {
+    //     LOG_ERR("Invalid number of messages");
+    //     return -EIO;
+    // }
+    // }
 
     return 0;
 }
@@ -167,7 +175,10 @@ static int emul_ezo_ec_init(const struct emul *target, const struct device *pare
     ARG_UNUSED(data);
     ARG_UNUSED(parent);
 
-    emul_ezo_ec_reset_registers(target);
+    emul_ezo_ec_reset_buffers(target);
+
+    char info[] = "?i,EC,2.16";
+    emul_ezo_ec_set_output(target, info, strlen(info));
 
     return 0;
 }

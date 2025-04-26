@@ -10,22 +10,14 @@ extern "C"
 {
 #endif
 
-#define EZO_EC_REG_AMOUNT 10
+#define EZO_EC_BUFFER_SIZE 30
+#define RESPONSE_TIME_MS 300
+#define OK_RESPONSE_CODE 1
+
+#define INFO_COMMAND "i"
+#define READ_COMMAND "R"
 
 int ezo_ec_init(const struct device *dev);
-
-typedef union {
-    uint8_t full_reg;
-    struct
-    {
-        uint8_t INT_S : 2;
-        uint8_t DRDY : 1;
-        uint8_t INT_F_OVR : 1;
-        uint8_t INT_F_WTM: 1;
-        uint8_t INT_F_FULL : 1;
-        uint8_t : 2;
-    };
-} ezo_ec_ctrl_3_reg_t;
 
 struct ezo_ec_config
 {
@@ -34,7 +26,7 @@ struct ezo_ec_config
 
 struct ezo_ec_data
 {
-
+    char output[EZO_EC_BUFFER_SIZE];
 };
 
 #ifdef __cplusplus

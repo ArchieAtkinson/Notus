@@ -1,6 +1,6 @@
 &i2c0 {
-    ezo_ec: ezoec@0 {
+    ezo_ec: ezoec@64 {
         compatible = "atlas,ezo_ec";
-        reg = <0x0>;
+        reg = <0x64>;
     };
 };
