@@ -1,4 +1,6 @@
+#include <array>
 #include <cstring>
+#include <string>
 #include <string_view>
 #include <zephyr/drivers/gpio/gpio_emul.h>
 #include <zephyr/drivers/sensor.h>
@@ -19,10 +21,10 @@ void set_output(const char *buf, int len)
     emul_ezo_ec_set_output(emul,buf, len);
 }
 
-// void get_input(char *buf, int len)
-// {
-//     emul_ezo_ec_get_input(emul,buf,len);
-// }
+void get_input(char *buf, int len)
+{
+    emul_ezo_ec_get_input(emul,buf,len);
+}
 
 void reset_emul()
 {
@@ -79,6 +81,17 @@ void teardown(void * /* f */)
     reset_emul();
 }
 
+ZTEST(t_ezo_ec, test_attr_set)
+{
+    zassert_ok(sensor_attr_set(ezo, SENSOR_CHAN_ALL, SENSOR_ATTR_CALIBRATION, nullptr));
+
+    std::array<char, 30> input{}; // NOLINT 
+    get_input(input.data(), input.size());
+    std::string input_str(input.begin(), input.end());
+    zassert_equal(strcmp(input_str.c_str(), "Cal,dry"), 0);        
+}
+
+
 ZTEST(t_ezo_ec, test_fetch_and_get)
 {
     std::string_view output = "4000.0";
@@ -89,6 +102,10 @@ ZTEST(t_ezo_ec, test_fetch_and_get)
     sensor_value val {}; 
     zassert_ok(sensor_channel_get(ezo, (enum sensor_channel)SENSOR_CHAN_CONDUCTIVITY, &val));
 
+    std::array<char, 1> input{}; 
+    get_input(input.data(), input.size());
+    zassert_equal(input[0], 'R');
+    
     zassert_equal(sensor_value_to_double(&val),  4000.0);
         
 }

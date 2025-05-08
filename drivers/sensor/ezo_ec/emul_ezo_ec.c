@@ -16,7 +16,12 @@
 #include "emul_ezo_ec.h"
 #include "ezo_ec_util.h"
 
-LOG_MODULE_REGISTER(EMUL_EZO_EC);
+LOG_MODULE_REGISTER(EMUL_EZO_EC); //NOLINT
+
+// Future Updates:
+// - Move to a circular buffer for input and output data
+// - Add ability to set response code
+// - Add support for the internal state?  
 
 // Runtime Data
 struct emul_ezo_ec_data
@@ -42,7 +47,6 @@ void emul_ezo_ec_set_output(const struct emul *emul, const char *buf, int len)
 
 void emul_ezo_ec_reset_buffers(const struct emul *emul)
 {
-    LOG_INF("Resetting Registers");
     struct emul_ezo_ec_data *data = emul->data;
     memset(data->input,0, EZO_EC_BUFFER_SIZE);
     memset(data->output, 0, EZO_EC_BUFFER_SIZE);
@@ -107,57 +111,6 @@ static int emul_ezo_ec_transfer(const struct emul *target, struct i2c_msg *msgs,
         return -EIO;
     }
     
-    // switch (num_msgs)
-    // {
-    // case 1: {
-    //     if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_READ)
-    //     {
-    //         emul_ezo_ec_read(data, msgs[0].len, msgs[0].buf);
-    //     }
-    //     else if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_WRITE)
-    //     {
-    //         data->cur_reg = msgs[0].buf[0];
-    //         if (msgs[0].len != 1)
-    //         {
-    //             emul_ezo_ec_write(data, msgs[0].len - 1, &msgs[0].buf[1]);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         LOG_ERR("Unknown transfer");
-    //         return -EIO;
-    //     }
-    //     break;
-    // }
-    // case 2: {
-    //     if ((msgs[0].flags & I2C_MSG_RW_MASK) == I2C_MSG_READ)
-    //     {
-    //         return -EIO;
-    //     }
-    //     if (msgs[0].len != 1U)
-    //     {
-    //         return -EIO;
-    //     }
-
-    //     data->cur_reg = msgs->buf[0];
-    //     // Handle Second Message
-
-    //     if ((msgs[1].flags & I2C_MSG_RW_MASK) == I2C_MSG_READ)
-    //     {
-    //         emul_ezo_ec_read(data, msgs[1].len, msgs[1].buf);
-    //     }
-    //     else if ((msgs[1].flags & I2C_MSG_RW_MASK) == I2C_MSG_WRITE)
-    //     {
-    //         emul_ezo_ec_write(data, msgs[1].len, msgs[1].buf);
-    //     }
-    //     break;
-    // }
-    // default: {
-    //     LOG_ERR("Invalid number of messages");
-    //     return -EIO;
-    // }
-    // }
-
     return 0;
 }
 
@@ -178,19 +131,19 @@ static int emul_ezo_ec_init(const struct emul *target, const struct device *pare
     emul_ezo_ec_reset_buffers(target);
 
     char info[] = "?i,EC,2.16";
-    emul_ezo_ec_set_output(target, info, strlen(info));
+    emul_ezo_ec_set_output(target, info, (int)strlen(info));
 
     return 0;
 }
 
 // clang-format off
 #define ezo_ec_EMUL(inst)                                                            \
-    static struct emul_ezo_ec_data emul_ezo_ec_data_##inst;                       \
-    EMUL_DT_INST_DEFINE(inst,                                                            \
-                &emul_ezo_ec_init,                                                  \
-                &emul_ezo_ec_data_##inst,                                          \
-                NULL,                                            \
-                &emul_ezo_ec_api, \
+    static struct emul_ezo_ec_data emul_ezo_ec_data_##inst;                          \
+    EMUL_DT_INST_DEFINE(inst,                                                        \
+                &emul_ezo_ec_init,                                                   \
+                &emul_ezo_ec_data_##inst,                                            \
+                NULL,                                                                \
+                &emul_ezo_ec_api,                                                    \
                 NULL)                                                        
                                               
 DT_INST_FOREACH_STATUS_OKAY(ezo_ec_EMUL) // NOLINT

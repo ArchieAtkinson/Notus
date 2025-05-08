@@ -14,6 +14,9 @@ function(ProjectSetup snippets)
 
     list(APPEND SNIPPET_ROOT $ENV{NOTUS_ROOT})
     set(SNIPPET_ROOT ${SNIPPET_ROOT} PARENT_SCOPE)
+
+    list(APPEND DTS_ROOT $ENV{NOTUS_ROOT})
+    set(DTS_ROOT ${DTS_ROOT} PARENT_SCOPE)
     
     set(SNIPPET ${snippets} PARENT_SCOPE)
 
